@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="vi" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortfoliHub - Nền Tảng Thiết Kế & Chia Sẻ Portfolio Chuyên Nghiệp</title>
+    
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            --font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .accent-gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-section {
+            padding: 120px 0 80px 0;
+            background: radial-gradient(circle at 90% 10%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 10% 90%, rgba(124, 58, 237, 0.08) 0%, transparent 40%);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .card-portfolio {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--bs-body-bg);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        .card-portfolio:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(79, 70, 229, 0.15);
+        }
+
+        .category-badge {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            padding: 8px 18px;
+        }
+
+        [data-bs-theme="dark"] .category-badge {
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .category-badge.active, .category-badge:hover {
+            background: var(--primary-gradient);
+            color: #fff !important;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .feature-icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            color: #4f46e5;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .pricing-card {
+            border: 2px solid transparent;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card.popular {
+            border-color: #4f46e5;
+            position: relative;
+        }
+
+        .pricing-card.popular::before {
+            content: "PHỔ BIẾN NHẤT";
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 16px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+        }
+
+        .toast-container-custom {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1060;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 50px;
+            padding: 6px 6px 6px 16px;
+            background: var(--bs-tertiary-bg);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        [data-bs-theme="dark"] .search-container {
+            border-color: rgba(255,255,255,0.05);
+        }
+
+        .search-container input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            padding: 8px;
+            color: var(--bs-body-color);
+        }
+
+        /* Hero Preview Mockup animation */
+        .hero-mockup-wrapper {
+            position: relative;
+        }
+        .hero-mockup-main {
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            border: 4px solid var(--bs-border-color);
+        }
+        .hero-mockup-float {
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            background: var(--bs-body-bg);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--bs-border-color);
+            animation: float-slow 4s ease-in-out infinite alternate;
+        }
+        @keyframes float-slow {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-body-tertiary">
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg fixed-top bg-body-transparent backdrop-blur border-bottom py-3" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color: rgba(0,0,0,0.06) !important;">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                <span class="p-2 rounded-3 d-flex align-items-center justify-content-center text-white" style="background: var(--primary-gradient);">
+                    <i class="bi bi-briefcase-fill"></i>
+                </span>
+                <span class="fs-4 fw-bold text-body">Portfolio<span class="text-primary">Hub</span></span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1 gap-lg-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#hero">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#explore">Khám phá</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Tính năng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pricing">Bảng giá</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Light/Dark Mode Switcher -->
+                    <button class="btn btn-link text-body p-2" id="themeToggleBtn" type="button" aria-label="Đổi chủ đề" title="Đổi giao diện Sáng/Tối">
+                        <i class="bi bi-sun-fill fs-5" id="themeIcon"></i>
+                    </button>
+                    <!-- Auth Actions -->
+                    <button class="btn btn-outline-secondary px-4 rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</button>
+                    <button class="btn btn-primary px-4 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" type="button" data-bs-toggle="modal" data-bs-target="#createPortfolioModal">Bắt đầu ngay</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+        <div class="container mt-4">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 text-center text-lg-start">
+                    <div class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 mb-3">
+                        <i class="bi bi-rocket-takeoff-fill me-1"></i> Nền tảng Portfolio thế hệ mới
+                    </div>
+                    <h1 class="display-4 fw-extrabold text-body lh-sm mb-3">
+                        Tỏa sáng với Portfolio của riêng bạn tại <span class="gradient-text">PortfoliHub</span>
+                    </h1>
+                    <p class="lead text-secondary mb-4">
+                        Nơi hội tụ hàng nghìn hồ sơ năng lực ấn tượng từ các lập trình viên, nhà thiết kế, nhiếp ảnh gia và người sáng tạo nội dung hàng đầu. Thiết lập dễ dàng trong 5 phút.
+                    </p>
+                    
+                    <!-- Integrated dynamic search inside hero -->
+                    <div class="search-container mb-4">
+                        <i class="bi bi-search text-secondary fs-5 me-2"></i>
+                        <input type="text" id="heroSearchInput" placeholder="Tìm kiếm tài năng, kỹ năng (ví dụ: React, UI/UX, Figma...)" aria-label="Tìm kiếm portfolio">
+                        <button class="btn btn-primary px-4 py-2 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" onclick="triggerHeroSearch()">Tìm</button>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-4">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                            <span class="fw-semibold">100% Miễn phí tạo</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                            <span class="fw-semibold">Không cần code</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                            <span class="fw-semibold">Tên miền tùy chỉnh</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="hero-mockup-wrapper text-center">
+                        <!-- Main Preview Mockup -->
+                        <img src="https://placehold.co/600x420/2d3748/ffffff?text=PortfoliHub+Builder+Preview" alt="PortfoliHub Workspace" class="img-fluid hero-mockup-main" onerror="this.src='https://placehold.co/600x420/4f46e5/ffffff?text=PortfoliHub+Workspace'">
+                        <!-- Floating Card -->
+                        <div class="hero-mockup-float d-none d-md-flex">
+                            <div class="rounded-circle p-2 bg-success-subtle text-success d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                <i class="bi bi-graph-up-arrow fs-5"></i>
+                            </div>
+                            <div class="text-start">
+                                <h6 class="mb-0 fw-bold">+240% View</h6>
+                                <p class="mb-0 text-muted small">Cơ hội tiếp cận nhà tuyển dụng</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filter Section -->
+    <section class="py-5 bg-body border-top border-bottom" id="categories-section">
+        <div class="container text-center">
+            <h5 class="text-secondary uppercase mb-4 text-xs tracking-wider">KHÁM PHÁ THEO LĨNH VỰC HÀNG ĐẦU</h5>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <span class="category-badge active text-secondary" onclick="filterCategory('All', this)">
+                    <i class="bi bi-grid-fill me-1"></i> Tất cả
+                </span>
+                <span class="category-badge text-secondary" onclick="filterCategory('Development', this)">
+                    <i class="bi bi-code-slash me-1"></i> Phát triển (Dev)
+                </span>
+                <span class="category-badge text-secondary" onclick="filterCategory('Design', this)">
+                    <i class="bi bi-brush-fill me-1"></i> Thiết kế (UI/UX)
+                </span>
+                <span class="category-badge text-secondary" onclick="filterCategory('Photography', this)">
+                    <i class="bi bi-camera-fill me-1"></i> Nhiếp ảnh
+                </span>
+                <span class="category-badge text-secondary" onclick="filterCategory('Writing', this)">
+                    <i class="bi bi-pen-fill me-1"></i> Viết lách & Content
+                </span>
+                <span class="category-badge text-secondary" onclick="filterCategory('Marketing', this)">
+                    <i class="bi bi-megaphone-fill me-1"></i> Marketing
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Explore Portfolios Showcase -->
+    <section class="py-5" id="explore">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-5">
+                <div>
+                    <h2 class="fw-bold mb-1 text-body">Mẫu Portfolio Nổi Bật</h2>
+                    <p class="text-muted">Được chọn lọc và bình chọn bởi cộng đồng chất lượng</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary rounded-pill btn-sm px-3" onclick="sortPortfolios('views')">
+                        <i class="bi bi-fire text-danger me-1"></i>Xem nhiều nhất
+                    </button>
+                    <button class="btn btn-outline-secondary rounded-pill btn-sm px-3" onclick="sortPortfolios('likes')">
+                        <i class="bi bi-heart-fill text-danger me-1"></i>Yêu thích nhất
+                    </button>
+                </div>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="row g-4" id="portfolioGrid">
+                <!-- Portfolios will be rendered here dynamically via JS -->
+            </div>
+
+            <!-- Load More Mock Action -->
+            <div class="text-center mt-5">
+                <button class="btn btn-outline-primary px-5 py-3 rounded-pill fw-semibold" id="btnLoadMore" onclick="loadMorePortfolios()">
+                    <span class="spinner-border spinner-border-sm d-none me-2" id="loadMoreSpinner" role="status"></span>
+                    Xem thêm các thiết kế độc đáo khác
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Features -->
+    <section class="py-5 bg-body border-top" id="features">
+        <div class="container">
+            <div class="text-center max-w-2xl mx-auto mb-5">
+                <h2 class="fw-bold text-body">Tính Năng Giúp Bạn Khác Biệt</h2>
+                <p class="text-muted">Trang bị các công cụ chuyên nghiệp để hỗ trợ hồ sơ của bạn đạt tỉ lệ tuyển dụng cao nhất</p>
+            </div>
+
+            <div class="row g-4 mt-2">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-transparent p-4">
+                        <div class="feature-icon-box">
+                            <i class="bi bi-layout-text-window-reverse"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Mẫu Thiết Kế Sẵn Có</h4>
+                        <p class="text-muted">Bộ sưu tập mẫu thiết kế đa dạng, hiện đại và tối ưu hóa tối đa cho các ngành nghề sáng tạo.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-transparent p-4">
+                        <div class="feature-icon-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); color: #3b82f6;">
+                            <i class="bi bi-globe"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Tên Miền Tùy Chỉnh</h4>
+                        <p class="text-muted">Kết nối portfolio với tên miền cá nhân của bạn để nâng tầm thương hiệu riêng biệt chuyên nghiệp.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-transparent p-4">
+                        <div class="feature-icon-box" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%); color: #10b981;">
+                            <i class="bi bi-bar-chart-line-fill"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Phân Tích Đo Lường</h4>
+                        <p class="text-muted">Theo dõi lưu lượng khách truy cập, xem vùng hoạt động và nắm bắt các số liệu từ nhà tuyển dụng.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works Step-by-Step -->
+    <section class="py-5" id="how-it-works">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-body">Quy Trình Hoạt Động Cực Kỳ Đơn Giản</h2>
+                <p class="text-muted">Thiết kế hoàn thiện chỉ với 3 bước cơ bản nhanh chóng</p>
+            </div>
+
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-4 text-center">
+                    <div class="p-4 bg-body rounded-4 shadow-sm border h-100">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 fs-3 fw-bold" style="width: 60px; height: 60px;">1</div>
+                        <h5 class="fw-bold">Chọn Giao Diện Ưu Thích</h5>
+                        <p class="text-muted mb-0">Lựa chọn từ kho template bắt mắt từ đơn giản đến nghệ thuật độc đáo.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="p-4 bg-body rounded-4 shadow-sm border h-100">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 fs-3 fw-bold" style="width: 60px; height: 60px;">2</div>
+                        <h5 class="fw-bold">Cập Nhật Thông Tin</h5>
+                        <p class="text-muted mb-0">Điền thông tin giới thiệu, các dự án, kỹ năng của bạn mà không cần đụng đến code.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="p-4 bg-body rounded-4 shadow-sm border h-100">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 fs-3 fw-bold" style="width: 60px; height: 60px;">3</div>
+                        <h5 class="fw-bold">Xuất Bản & Chia Sẻ</h5>
+                        <p class="text-muted mb-0">Chia sẻ đường dẫn chuyên nghiệp đến các nhà tuyển dụng hàng đầu trên thế giới.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-5 bg-body-secondary" id="pricing">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-body">Gói Dịch Vụ Phù Hợp Cho Mọi Đối Tượng</h2>
+                <p class="text-muted">Khởi tạo miễn phí và nâng cấp khi bạn muốn khẳng định đẳng cấp cao hơn</p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <!-- Free Plan -->
+                <div class="col-lg-4">
+                    <div class="card pricing-card bg-body border shadow-sm p-4 h-100">
+                        <div class="mb-4">
+                            <span class="fs-6 text-uppercase fw-bold text-secondary">CÁ NHÂN</span>
+                            <h3 class="display-5 fw-bold text-body my-2">Free</h3>
+                            <p class="text-muted">Hoàn hảo cho người mới bắt đầu thiết lập portfolio đầu tiên.</p>
+                        </div>
+                        <ul class="list-unstyled mb-5 d-flex flex-column gap-3">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Sử dụng 3 dự án nổi bật</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Giao diện tiêu chuẩn cơ bản</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Tên miền có đuôi portfolihub.io</li>
+                            <li class="text-muted"><i class="bi bi-x-circle-fill text-danger me-2"></i> Phân tích lượt truy cập (Premium)</li>
+                            <li class="text-muted"><i class="bi bi-x-circle-fill text-danger me-2"></i> Tải PDF phiên bản ngoại tuyến</li>
+                        </ul>
+                        <button class="btn btn-outline-primary py-3 rounded-pill mt-auto fw-semibold" onclick="selectPlan('Free')">Đăng ký miễn phí</button>
+                    </div>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="col-lg-4">
+                    <div class="card pricing-card popular bg-body shadow p-4 h-100">
+                        <div class="mb-4">
+                            <span class="fs-6 text-uppercase fw-bold text-primary">CHUYÊN NGHIỆP</span>
+                            <h3 class="display-5 fw-bold text-body my-2">99k<span class="fs-5 text-muted fw-normal">/tháng</span></h3>
+                            <p class="text-muted">Lựa chọn tối ưu để bứt phá và lọt vào mắt xanh nhà tuyển dụng khó tính.</p>
+                        </div>
+                        <ul class="list-unstyled mb-5 d-flex flex-column gap-3">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Không giới hạn số lượng dự án</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Kho giao diện Cao Cấp (Premium templates)</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Kết nối tên miền cá nhân (.com, .net,...)</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Phân tích lượng truy cập chi tiết</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Xuất bản / Tải PDF in ấn trực tiếp</li>
+                        </ul>
+                        <button class="btn btn-primary py-3 rounded-pill mt-auto fw-semibold shadow-sm" style="background: var(--primary-gradient); border: none;" onclick="selectPlan('Pro')">Trải nghiệm ngay Pro</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5 text-white" style="background: var(--primary-gradient);">
+        <div class="container py-4 text-center">
+            <h2 class="fw-bold mb-3 display-6">Sẵn Sàng Xây Dựng Thương Hiệu Cá Nhân?</h2>
+            <p class="lead mb-4">Tham gia cùng hơn 100,000+ lập trình viên và nhà thiết kế đang tỏa sáng mỗi ngày.</p>
+            <button class="btn btn-light text-primary fw-bold px-5 py-3 rounded-pill shadow" data-bs-toggle="modal" data-bs-target="#createPortfolioModal">Tạo Portfolio của Bạn Ngay</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-body-tertiary border-top pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span class="p-2 rounded-3 d-flex align-items-center justify-content-center text-white" style="background: var(--primary-gradient);">
+                            <i class="bi bi-briefcase-fill"></i>
+                        </span>
+                        <span class="fs-4 fw-bold text-body">Portfoli<span class="text-primary">Hub</span></span>
+                    </div>
+                    <p class="text-muted">Chúng tôi giúp các cá nhân tài năng trình bày thông tin, kỹ năng và các tác phẩm sáng tạo tốt nhất một cách hiện đại, trực quan hàng đầu thế giới.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-secondary fs-4"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-secondary fs-4"><i class="bi bi-github"></i></a>
+                        <a href="#" class="text-secondary fs-4"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="text-secondary fs-4"><i class="bi bi-twitter-x"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-2 offset-lg-1">
+                    <h6 class="fw-bold mb-3">Liên Kết</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a href="#hero" class="text-muted text-decoration-none">Trang chủ</a></li>
+                        <li><a href="#explore" class="text-muted text-decoration-none">Mẫu khám phá</a></li>
+                        <li><a href="#features" class="text-muted text-decoration-none">Tính năng nổi bật</a></li>
+                        <li><a href="#pricing" class="text-muted text-decoration-none">Bảng giá dịch vụ</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="fw-bold mb-3">Hỗ Trợ</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a href="#" class="text-muted text-decoration-none">Tài liệu hướng dẫn</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Cộng đồng thảo luận</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Trung tâm trợ giúp</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Liên hệ hợp tác</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h6 class="fw-bold mb-3">Đăng Ký Bản Tin Mới</h6>
+                    <p class="text-muted">Nhận ngay cẩm nang tối ưu CV/Portfolio hàng tuần.</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control rounded-start-pill border-secondary-subtle" placeholder="Địa chỉ email..." aria-label="Recipient's email">
+                        <button class="btn btn-primary rounded-end-pill px-3" style="background: var(--primary-gradient); border: none;" type="button" onclick="subscribeNewsletter()">Đăng ký</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <span class="text-muted">© 2026 PortfoliHub. Tất cả quyền được bảo lưu.</span>
+                <div class="d-flex gap-4">
+                    <a href="#" class="text-muted text-decoration-none small">Điều khoản sử dụng</a>
+                    <a href="#" class="text-muted text-decoration-none small">Chính sách bảo mật</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Login Mockup -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="loginModalLabel">Đăng nhập tài khoản</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <form onsubmit="handleLogin(event)">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email đăng ký</label>
+                            <input type="email" class="form-control rounded-3" id="loginEmail" required placeholder="name@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Mật khẩu</label>
+                            <input type="password" class="form-control rounded-3" id="loginPassword" required placeholder="Nhập mật khẩu...">
+                        </div>
+                        <div class="d-flex justify-content-between mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                            </div>
+                            <a href="#" class="text-primary text-decoration-none">Quên mật khẩu?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full py-3 rounded-pill fw-semibold w-100" style="background: var(--primary-gradient); border: none;">Đăng nhập ngay</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <span class="text-muted">Chưa có tài khoản? <a href="#" data-bs-toggle="modal" data-bs-target="#createPortfolioModal" data-bs-dismiss="modal" class="text-primary text-decoration-none fw-semibold">Đăng ký mới</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Portfolio Creator Modal -->
+    <div class="modal fade" id="createPortfolioModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="createModalLabel"><i class="bi bi-magic me-2 text-primary"></i>Tạo Portfolio Nhanh Sau 1 Phút</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <form id="portfolioCreatorForm" onsubmit="handleQuickCreate(event)">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Họ và Tên</label>
+                                    <input type="text" class="form-control" id="formFullName" placeholder="Nguyễn Văn A" required oninput="updateModalPreview()">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Lĩnh vực hoạt động</label>
+                                    <select class="form-select" id="formField" onchange="updateModalPreview()">
+                                        <option value="Phát triển (Dev)">Phát triển phần mềm (Developer)</option>
+                                        <option value="Thiết kế (UI/UX)">Nhà thiết kế (UI/UX Designer)</option>
+                                        <option value="Nhiếp ảnh">Nhiếp ảnh gia (Photographer)</option>
+                                        <option value="Viết lách">Content Writer / Copywriter</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Kỹ năng đặc trưng</label>
+                                    <input type="text" class="form-control" id="formSkills" placeholder="React, Node.js, Figma,..." required oninput="updateModalPreview()">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Mô tả tóm tắt bản thân</label>
+                                    <textarea class="form-control" id="formBio" rows="3" placeholder="Xin chào, tôi là một chuyên gia sáng tạo..." required oninput="updateModalPreview()"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-semibold shadow-sm" style="background: var(--primary-gradient); border: none;">Xác Nhận & Tạo Giao Diện</button>
+                            </form>
+                        </div>
+                        <div class="col-md-6 border-start d-flex flex-column justify-content-center">
+                            <h6 class="text-center fw-bold text-muted mb-3">Bản Xem Trước Thiết Kế Sơ Bộ</h6>
+                            <div class="card border p-3 rounded-3 shadow-sm bg-body-tertiary">
+                                <div class="text-center mb-3">
+                                    <div class="rounded-circle bg-primary-subtle text-primary mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                                        <i class="bi bi-person-circle fs-1"></i>
+                                    </div>
+                                    <h5 class="fw-bold mb-0" id="previewName">Nguyễn Văn A</h5>
+                                    <span class="badge bg-secondary-subtle text-secondary" id="previewField">Phát triển (Dev)</span>
+                                </div>
+                                <hr class="my-2">
+                                <div class="mb-2">
+                                    <strong class="small text-muted d-block">Giới thiệu:</strong>
+                                    <p class="small mb-0 text-muted" id="previewBio">Xin chào, tôi là một chuyên gia sáng tạo...</p>
+                                </div>
+                                <div>
+                                    <strong class="small text-muted d-block">Kỹ năng cốt lõi:</strong>
+                                    <div id="previewSkills" class="d-flex flex-wrap gap-1 mt-1">
+                                        <span class="badge bg-primary-subtle text-primary small">React</span>
+                                        <span class="badge bg-primary-subtle text-primary small">Figma</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Alerts & Toasts Notification System -->
+    <div class="toast-container-custom">
+        <div id="feedbackToast" class="toast align-items-center border-0 text-white bg-dark" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i class="bi bi-check-circle-fill text-success fs-5" id="toastIcon"></i>
+                    <span id="toastMessage">Thông báo thành công!</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white m-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS + Custom Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- Static Mock Data ---
+        const initialPortfolios = [
+            { id: 1, name: "Trần Anh Quân", field: "Development", title: "Fullstack Web & Mobile Developer", views: 1250, likes: 340, skills: ["React", "NodeJS", "MongoDB"], avatar: "https://placehold.co/150x150/4f46e5/ffffff?text=AQ" },
+            { id: 2, name: "Lê Minh Trang", field: "Design", title: "Senior UI/UX Designer & Researcher", views: 2450, likes: 980, skills: ["Figma", "Adobe XD", "Wireframing"], avatar: "https://placehold.co/150x150/7c3aed/ffffff?text=MT" },
+            { id: 3, name: "Nguyễn Hải Đăng", field: "Photography", title: "Landscape & Portrait Photographer", views: 890, likes: 210, skills: ["Photoshop", "Lightroom", "Cinematic"], avatar: "https://placehold.co/150x150/3b82f6/ffffff?text=HD" },
+            { id: 4, name: "Phạm Minh Thư", field: "Writing", title: "Blogger & SEO Content Specialist", views: 1100, likes: 450, skills: ["Copywriting", "SEO", "Creative Writing"], avatar: "https://placehold.co/150x150/ec4899/ffffff?text=MT" },
+            { id: 5, name: "Hoàng Việt Bách", field: "Marketing", title: "Digital Marketing Strategist & Advisor", views: 1420, likes: 310, skills: ["SEO", "Google Ads", "Analytics"], avatar: "https://placehold.co/150x150/10b981/ffffff?text=VB" },
+            { id: 6, name: "Vũ Bảo Nam", field: "Development", title: "Flutter Mobile Dev & Tech Enthusiast", views: 920, likes: 180, skills: ["Flutter", "Dart", "Firebase"], avatar: "https://placehold.co/150x150/f59e0b/ffffff?text=BN" }
+        ];
+
+        let portfolios = [...initialPortfolios];
+        let currentFilter = "All";
+
+        // --- Theme Switcher Logic ---
+        const themeToggleBtn = document.getElementById("themeToggleBtn");
+        const themeIcon = document.getElementById("themeIcon");
+        const htmlElement = document.documentElement;
+
+        // Initialize Theme
+        const storedTheme = localStorage.getItem("theme") || "light";
+        htmlElement.setAttribute("data-bs-theme", storedTheme);
+        updateThemeIcon(storedTheme);
+
+        themeToggleBtn.addEventListener("click", () => {
+            const currentTheme = htmlElement.getAttribute("data-bs-theme");
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            htmlElement.setAttribute("data-bs-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            updateThemeIcon(newTheme);
+            showToast(`Đã chuyển sang chế độ ${newTheme === 'light' ? 'Sáng' : 'Tối'}!`);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === "dark") {
+                themeIcon.className = "bi bi-moon-fill fs-5";
+            } else {
+                themeIcon.className = "bi bi-sun-fill fs-5";
+            }
+        }
+
+        // --- Render Portfolios Grid ---
+        function renderPortfolios(data) {
+            const grid = document.getElementById("portfolioGrid");
+            grid.innerHTML = "";
+
+            if(data.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-search fs-1 text-muted d-block mb-3"></i>
+                        <p class="text-muted">Không tìm thấy portfolio nào khớp với tiêu chuẩn tìm kiếm của bạn.</p>
+                        <button class="btn btn-outline-primary btn-sm rounded-pill" onclick="resetSearchAndFilters()">Hiển thị tất cả</button>
+                    </div>
+                `;
+                return;
+            }
+
+            data.forEach(p => {
+                const skillsHtml = p.skills.map(s => `<span class="badge bg-secondary-subtle text-secondary me-1 mb-1">${s}</span>`).join('');
+                
+                const card = `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card card-portfolio h-100 p-3">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <img src="${p.avatar}" alt="${p.name}" class="rounded-circle shadow-sm" style="width: 55px; height: 55px; object-fit: cover;">
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-body" style="font-size: 1.1rem;">${p.name}</h5>
+                                    <span class="text-xs text-primary fw-medium" style="font-size: 0.8rem;"><i class="bi bi-tag-fill me-1"></i>${translateField(p.field)}</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-0 mb-3">
+                                <h6 class="fw-semibold text-body mb-2">${p.title}</h6>
+                                <div class="d-flex flex-wrap mt-2">
+                                    ${skillsHtml}
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 p-0 mt-auto pt-3 border-top d-flex align-items-center justify-content-between">
+                                <div class="d-flex gap-3 text-secondary" style="font-size: 0.85rem;">
+                                    <span><i class="bi bi-eye me-1"></i>${p.views}</span>
+                                    <span><i class="bi bi-heart me-1"></i>${p.likes}</span>
+                                </div>
+                                <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="viewPortfolioMock(${p.id})">Xem Portfolio <i class="bi bi-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        function translateField(field) {
+            const translations = {
+                "Development": "Phát triển (Dev)",
+                "Design": "Thiết kế (UI/UX)",
+                "Photography": "Nhiếp ảnh",
+                "Writing": "Viết lách & Content",
+                "Marketing": "Marketing"
+            };
+            return translations[field] || field;
+        }
+
+        // --- Filter logic ---
+        function filterCategory(category, element) {
+            currentFilter = category;
+            
+            // Toggle Active UI class
+            document.querySelectorAll(".category-badge").forEach(el => el.classList.remove("active"));
+            element.classList.add("active");
+
+            applyFiltersAndSearch();
+        }
+
+        function applyFiltersAndSearch(searchTerm = "") {
+            let filtered = [...portfolios];
+
+            // 1. Apply category filter
+            if (currentFilter !== "All") {
+                filtered = filtered.filter(p => p.field.toLowerCase() === currentFilter.toLowerCase());
+            }
+
+            // 2. Apply search text (if search is triggered)
+            if (searchTerm.trim() !== "") {
+                const term = searchTerm.toLowerCase();
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(term) || 
+                    p.title.toLowerCase().includes(term) ||
+                    p.skills.some(s => s.toLowerCase().includes(term))
+                );
+            }
+
+            renderPortfolios(filtered);
+        }
+
+        // Search trigger
+        function triggerHeroSearch() {
+            const val = document.getElementById("heroSearchInput").value;
+            applyFiltersAndSearch(val);
+            if(val) {
+                // Scroll down to portfolio explorer automatically
+                document.getElementById("explore").scrollIntoView({ behavior: 'smooth' });
+                showToast(`Đã lọc danh sách tìm kiếm: "${val}"`);
+            }
+        }
+
+        document.getElementById("heroSearchInput").addEventListener("keypress", function(e) {
+            if (e.key === 'Enter') {
+                triggerHeroSearch();
+            }
+        });
+
+        function resetSearchAndFilters() {
+            document.getElementById("heroSearchInput").value = "";
+            currentFilter = "All";
+            document.querySelectorAll(".category-badge").forEach(el => el.classList.remove("active"));
+            document.querySelector(".category-badge").classList.add("active");
+            renderPortfolios(portfolios);
+        }
+
+        // --- Sort Logic ---
+        function sortPortfolios(type) {
+            let sorted = [...portfolios];
+            if (type === 'views') {
+                sorted.sort((a, b) => b.views - a.views);
+                showToast("Đã sắp xếp theo lượt xem nhiều nhất!");
+            } else if (type === 'likes') {
+                sorted.sort((a, b) => b.likes - a.likes);
+                showToast("Đã sắp xếp theo lượt yêu thích nhất!");
+            }
+            renderPortfolios(sorted);
+        }
+
+        // --- Load More Action (Mock Simulation) ---
+        function loadMorePortfolios() {
+            const btn = document.getElementById("btnLoadMore");
+            const spinner = document.getElementById("loadMoreSpinner");
+            
+            btn.disabled = true;
+            spinner.classList.remove("d-none");
+
+            setTimeout(() => {
+                // Add fresh mock entries
+                const newItems = [
+                    { id: 7, name: "Phùng Gia Thế", field: "Development", title: "C++ & Unreal Engine Game Developer", views: 760, likes: 120, skills: ["C++", "Unreal Engine", "Shaders"], avatar: "https://placehold.co/150x150/6366f1/ffffff?text=GT" },
+                    { id: 8, name: "Đặng Mỹ Linh", field: "Design", title: "Brand Identity Designer", views: 1850, likes: 620, skills: ["Illustrator", "Brand Guidelines", "Logos"], avatar: "https://placehold.co/150x150/ec4899/ffffff?text=ML" }
+                ];
+
+                portfolios = [...portfolios, ...newItems];
+                applyFiltersAndSearch(document.getElementById("heroSearchInput").value);
+
+                btn.disabled = false;
+                spinner.classList.add("d-none");
+                // Hide button if all elements are shown
+                btn.innerHTML = "Đã tải xong tất cả các mẫu";
+                btn.classList.replace("btn-outline-primary", "btn-outline-secondary");
+                showToast("Đã cập nhật thêm mẫu mới thành công!");
+            }, 1200);
+        }
+
+        // --- Live Preview in Quick Creator Modal ---
+        function updateModalPreview() {
+            const name = document.getElementById("formFullName").value || "Nguyễn Văn A";
+            const field = document.getElementById("formField").value;
+            const bio = document.getElementById("formBio").value || "Xin chào, tôi là một chuyên gia sáng tạo...";
+            const skillsVal = document.getElementById("formSkills").value || "React, Figma";
+
+            document.getElementById("previewName").innerText = name;
+            document.getElementById("previewField").innerText = field;
+            document.getElementById("previewBio").innerText = bio;
+
+            const skillsArr = skillsVal.split(",").map(s => s.trim()).filter(s => s !== "");
+            const skillsContainer = document.getElementById("previewSkills");
+            skillsContainer.innerHTML = "";
+            skillsArr.forEach(s => {
+                skillsContainer.innerHTML += `<span class="badge bg-primary-subtle text-primary small">${s}</span>`;
+            });
+        }
+
+        // Form submission for creation
+        function handleQuickCreate(event) {
+            event.preventDefault();
+            const name = document.getElementById("formFullName").value;
+            const fieldSelect = document.getElementById("formField");
+            const fieldEn = fieldSelect.options[fieldSelect.selectedIndex].value === "Phát triển (Dev)" ? "Development" :
+                          fieldSelect.options[fieldSelect.selectedIndex].value === "Thiết kế (UI/UX)" ? "Design" :
+                          fieldSelect.options[fieldSelect.selectedIndex].value === "Nhiếp ảnh" ? "Photography" : "Writing";
+            const skills = document.getElementById("formSkills").value.split(",").map(s => s.trim());
+            const bio = document.getElementById("formBio").value;
+
+            // Instantly append new portfolio entry
+            const newPortfolio = {
+                id: portfolios.length + 1,
+                name: name,
+                field: fieldEn,
+                title: `${fieldSelect.value} Chuyên nghiệp`,
+                views: 1,
+                likes: 0,
+                skills: skills.length > 0 && skills[0] !== "" ? skills : ["Chưa cập nhật"],
+                avatar: `https://placehold.co/150x150/4f46e5/ffffff?text=${name.charAt(0)}`
+            };
+
+            portfolios.unshift(newPortfolio); // Place on top
+            renderPortfolios(portfolios);
+
+            // Hide modal
+            const creatorModal = bootstrap.Modal.getInstance(document.getElementById('createPortfolioModal'));
+            creatorModal.hide();
+
+            // Clear inputs
+            document.getElementById("portfolioCreatorForm").reset();
+            
+            // Feedback notification
+            showToast("Chúc mừng! Portfolio của bạn đã được khởi tạo và hiển thị mẫu!", "success");
+            document.getElementById("explore").scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- Mock Utility interactions ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById("loginEmail").value;
+            const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+            loginModal.hide();
+            showToast(`Chào mừng bạn quay lại, ${email}!`, "success");
+        }
+
+        function subscribeNewsletter() {
+            showToast("Đã gửi đăng ký nhận bản tin! Vui lòng xác thực email của bạn.", "success");
+        }
+
+        function selectPlan(planType) {
+            showToast(`Đã chọn đăng ký gói: ${planType}. Hệ thống đang liên kết...`, "success");
+        }
+
+        function viewPortfolioMock(id) {
+            const p = portfolios.find(x => x.id === id);
+            if(p) {
+                p.views += 1; // simulation views inc
+                renderPortfolios(portfolios);
+                showToast(`Đang truy cập Portfolio ảo của nhà sáng tạo: ${p.name}`, "info");
+            }
+        }
+
+        // --- Toast utility system ---
+        function showToast(message, type = "info") {
+            const toastEl = document.getElementById("feedbackToast");
+            const toastMessage = document.getElementById("toastMessage");
+            const toastIcon = document.getElementById("toastIcon");
+
+            toastMessage.innerText = message;
+            
+            // Adjust styles
+            if (type === "success") {
+                toastEl.className = "toast align-items-center border-0 text-white bg-success";
+                toastIcon.className = "bi bi-check-circle-fill fs-5";
+            } else if (type === "info") {
+                toastEl.className = "toast align-items-center border-0 text-white bg-dark";
+                toastIcon.className = "bi bi-info-circle-fill fs-5";
+            }
+
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+
+        // Initialize display
+        window.onload = function() {
+            renderPortfolios(portfolios);
+        }
+    </script>
+</body>
+</html>
