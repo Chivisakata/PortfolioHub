@@ -99,16 +99,7 @@
             </div>
 
             <!-- Registration Form -->
-            <form id="registerForm" onsubmit="handleRegister(event)" class="needs-validation" novalidate>
-                <!-- Full Name Field -->
-                <div class="mb-3">
-                    <label for="regName" class="form-label small fw-semibold">Họ và Tên</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-body-tertiary border-end-0"><i class="bi bi-person text-muted"></i></span>
-                        <input type="text" id="regName" class="form-control border-start-0" placeholder="Nguyễn Văn A" required>
-                    </div>
-                </div>
-
+            <form id="registerForm">
                 <!-- Email Field -->
                 <div class="mb-3">
                     <label for="regEmail" class="form-label small fw-semibold">Địa chỉ Email</label>
@@ -123,16 +114,11 @@
                     <label for="regPassword" class="form-label small fw-semibold">Mật khẩu</label>
                     <div class="input-group">
                         <span class="input-group-text bg-body-tertiary border-end-0"><i class="bi bi-lock text-muted"></i></span>
-                        <input type="password" id="regPassword" class="form-control border-start-0 border-end-0" placeholder="Tối thiểu 6 ký tự" oninput="checkPasswordStrength()" required>
+                        <input type="password" id="regPassword" class="form-control border-start-0 border-end-0" placeholder="Tối thiểu 8 ký tự" required minlength="8" maxlength="32">
                         <button class="btn btn-outline-secondary border-start-0 bg-body-tertiary text-muted" type="button" onclick="togglePasswordVisibility('regPassword', 'passwordIcon')">
                             <i class="bi bi-eye-fill" id="passwordIcon"></i>
                         </button>
                     </div>
-                    <!-- Password Strength Meter -->
-                    <div class="progress mt-2 bg-body-secondary" style="height: 4px;">
-                        <div id="strengthBar" class="progress-bar password-strength-bar" role="progressbar" style="width: 0%"></div>
-                    </div>
-                    <div id="strengthText" class="form-text small mt-1" style="font-size: 0.75rem;"></div>
                 </div>
 
                 <!-- Confirm Password Field -->
@@ -140,7 +126,7 @@
                     <label for="confirmPassword" class="form-label small fw-semibold">Nhập lại mật khẩu</label>
                     <div class="input-group">
                         <span class="input-group-text bg-body-tertiary border-end-0"><i class="bi bi-shield-lock text-muted"></i></span>
-                        <input type="password" id="confirmPassword" class="form-control border-start-0 border-end-0" placeholder="••••••••" oninput="validatePasswordMatch()" required>
+                        <input type="password" id="confirmPassword" class="form-control border-start-0 border-end-0" placeholder="••••••••" required>
                         <button class="btn btn-outline-secondary border-start-0 bg-body-tertiary text-muted" type="button" onclick="togglePasswordVisibility('confirmPassword', 'confirmPasswordIcon')">
                             <i class="bi bi-eye-fill" id="confirmPasswordIcon"></i>
                         </button>
@@ -201,26 +187,53 @@
             }
         }
 
+
+        // --- Check validate ---
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+                // 1. Lấy giá trị mật khẩu user nhập vào
+                const passwordInput = document.getElementById('regPassword');
+                const confirmPasswordInput = document.getElementById('confirmPassword');
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                // 2. Định nghĩa "bùa chú" Regex
+                // Ý nghĩa: 
+                // ^(?=.*[a-zA-Z0-9]) -> Phải có ít nhất 1 chữ (hoa/thường) HOẶC 1 số
+                // ^[^\s]+$           -> Không được chứa khoảng trắng (dấu cách)
+                const passwordPattern = /^(?=.*[a-zA-Z0-9])[^\s]{8,32}$/; 
+
+                passwordInput.setCustomValidity(""); // Reset custom validity
+                confirmPasswordInput.setCustomValidity(""); // Reset custom validity
+                if (!passwordPattern.test(password)) {
+                    passwordInput.setCustomValidity("Mật khẩu chỉ chứa kí tự A-Z, a-z hoặc 0-9 và kí tự đặc biệt, không chứa khoảng trắng và có ít nhất 1 chữ hoặc 1 số nhé!");
+                    passwordInput.reportValidity();
+                    event.preventDefault(); 
+                    passwordInput.focus();
+                }
+                // 4. Kiểm tra xem mật khẩu và xác nhận mật khẩu có khớp không
+                if (password !== confirmPassword) {
+                    confirmPasswordInput.setCustomValidity("Mật khẩu xác nhận không khớp!");
+                    confirmPasswordInput.reportValidity();
+                    event.preventDefault();
+                    confirmPasswordInput.focus();
+                }
+            });
+            const passwordInput = document.getElementById('regPassword');
+            passwordInput.addEventListener('input', function () {
+            passwordInput.setCustomValidity("");
+            });
+
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            confirmPasswordInput.addEventListener('input', function () {
+            confirmPasswordInput.setCustomValidity("");
+            });
+
        
 
       
 
 
-        // --- Toast Alert Helper Utility ---
-        function showToast(msg, type = "dark") {
-            const toastEl = document.getElementById("liveToast");
-            const msgEl = document.getElementById("toastMessage");
-            msgEl.innerText = msg;
-            
-            let bgClass = "bg-dark";
-            if (type === "success") bgClass = "bg-success";
-            if (type === "info") bgClass = "bg-primary";
-            if (type === "warning") bgClass = "bg-warning text-dark";
-            
-            toastEl.className = `toast align-items-center text-white border-0 ${bgClass}`;
-            const t = new bootstrap.Toast(toastEl);
-            t.show();
-        }
+    
     </script>
 </body>
 </html>
