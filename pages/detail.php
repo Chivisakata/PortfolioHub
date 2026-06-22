@@ -1,5 +1,58 @@
+
+<?php
+// Adjust this path if your config folder is up one directory level
+require_once '../config/dbContext.php'; 
+
+// 1. Capture the unique user id sent from the URL query parameter (?id=X)
+$userId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+if ($userId <= 0) {
+    die("Yêu cầu không hợp lệ. Không tìm thấy ID người dùng.");
+}
+
+try {
+    // 2. Fetch basic profile info matching this specific ID
+    $userQuery = "
+        SELECT 
+            userdetails.name, 
+            userdetails.pfp AS image_url, 
+            IFNULL(profiles.field, 'Chưa cập nhật') AS category
+        FROM userdetails
+        LEFT JOIN profiles ON userdetails.id = profiles.id
+        WHERE userdetails.id = :id
+    ";
+    $stmt = $pdo->prepare($userQuery);
+    $stmt->execute(['id' => $userId]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user) {
+        die("Người dùng này không tồn tại trong hệ thống.");
+    }
+
+    // 3. Fetch all projects tied to this user's unique id (projects.uid)
+    $projectQuery = "
+        SELECT title, tech 
+        FROM projects 
+        WHERE uid = :id
+    ";
+    $stmtProject = $pdo->prepare($projectQuery);
+    $stmtProject->execute(['id' => $userId]);
+    $projects = $stmtProject->fetchAll(PDO::FETCH_ASSOC);
+
+    // Dynamic clean Initials generator for the profile circle icon (e.g., "Trần Anh Quân" -> "AQ")
+    $nameParts = explode(" ", $user['name']);
+    $initials = (count($nameParts) >= 2) 
+        ? mb_substr($nameParts[count($nameParts)-2], 0, 1) . mb_substr($nameParts[count($nameParts)-1], 0, 1)
+        : mb_substr($user['name'], 0, 2);
+    $initials = mb_strtoupper($initials);
+
+} catch(PDOException $e) {
+    die("Lỗi kết nối cơ sở dữ liệu: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
-<html lang="vi" data-bs-theme="light">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
