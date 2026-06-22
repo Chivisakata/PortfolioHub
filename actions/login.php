@@ -1,5 +1,5 @@
  <?php
- include '../config/dbContext.php';
+ require_once '../config/dbContext.php';
     session_start();
 
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
