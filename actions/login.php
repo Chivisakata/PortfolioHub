@@ -23,7 +23,7 @@
     }
 
     //kiểm tra email và mật khẩu có tồn tại trong cơ sở dữ liệu
-    $sql = "SELECT id, hashedPsswd FROM users WHERE email = ?";
+    $sql = "SELECT id, email, role, hashedPsswd FROM users WHERE email = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $email);
     mysqli_stmt_execute($stmt);
