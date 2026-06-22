@@ -94,6 +94,22 @@
     </head>
 
     <body>
+        <!--Alert Messages -->
+          <?php
+            session_start();
+            if (isset($_SESSION["success"])) {
+            ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+                <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
+                    <?= htmlspecialchars($_SESSION["success"]) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            </div>
+            <?php
+                unset($_SESSION["success"]);
+            }
+        ?>
+
         <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color:black ;">        <!--Name on navbar-->
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2" href="#">
@@ -128,7 +144,7 @@
                             <i class="bi bi-sun-fill fs-5" id="themeIcon"></i>
                         </button>
                         <!-- Auth Actions -->
-                        <button class="btn btn-outline-secondary px-4 rounded-pill" type="button" onclick="window.location.href='./pages/login.html'">Đăng nhập</button>
+                        <button class="btn btn-outline-secondary px-4 rounded-pill" type="button" onclick="window.location.href='./pages/login.php'">Đăng nhập</button>
                         <button class="btn btn-primary px-4 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" type="button">Bắt đầu ngay</button>
                     </div>
                 </div>
@@ -396,7 +412,7 @@
         <div class="container py-4 text-center">
             <h2 class="fw-bold mb-3 display-6">Sẵn Sàng Xây Dựng Thương Hiệu Cá Nhân?</h2>
             <p class="lead mb-4">Tham gia cùng hơn 100,000+ lập trình viên và nhà thiết kế đang tỏa sáng mỗi ngày.</p>
-                    <button class="btn btn-light text-primary fw-bold px-5 py-3 rounded-pill shadow"  onclick="window.location.href='./pages/login.html'" >Tạo Portfolio của Bạn Ngay</button>
+                    <button class="btn btn-light text-primary fw-bold px-5 py-3 rounded-pill shadow"  onclick="window.location.href='./pages/login.php'" >Tạo Portfolio của Bạn Ngay</button>
         </div>
     </section>
 
@@ -452,5 +468,17 @@
             </div>
         </div>
     </footer>
+    
+    <!-- Bootstrap & Custom JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- alert time out  ---  
+        setTimeout(() => {
+        const alert = document.querySelector(".alert");
+        if (alert) {
+        bootstrap.Alert.getOrCreateInstance(alert).close();
+        }
+        }, 3000);
+    </script>
     </body>
 </html>

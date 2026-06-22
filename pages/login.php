@@ -57,6 +57,21 @@
 </head>
 <body class="bg-body-tertiary">
 
+<?php
+    session_start();
+    if (isset($_SESSION["error"])) {
+    ?>
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+        <div class="alert alert-danger alert-dismissible fade show shadow" role="alert">
+            <?= htmlspecialchars($_SESSION["error"]) ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    </div>
+    <?php
+        unset($_SESSION["error"]);
+    }
+    ?>
+
     <div class="position-absolute top-0 end-0 p-3">
         <button class="btn btn-link text-body p-2" id="themeToggleBtn" title="Đổi giao diện Sáng/Tối">
             <i class="bi bi-sun-fill fs-5" id="themeIcon"></i>
@@ -68,7 +83,7 @@
             
             <!-- Logo & Title -->
             <div class="text-center mb-4">
-                 <a href="../index.html" class="text-decoration-none d-inline-block mb-3">
+                 <a href="../index.php" class="text-decoration-none d-inline-block mb-3">
                      <i><image src="../images/logo.jpg" style="width:50px; height:50px;"></image></i>
                  </a>
                 <h3 class="fw-bold mb-1">Mừng bạn quay lại!</h3>
@@ -94,12 +109,12 @@
                 <hr class="flex-grow-1 text-muted">
             </div>
 
-            <form id="loginForm" onsubmit="handleLogin(event)">
+            <form id="loginForm" action="../actions/login.php" method="POST">
                 <div class="mb-3">
                     <label for="loginEmail" class="form-label small fw-semibold">Địa chỉ Email</label>
                     <div class="input-group">
                         <span class="input-group-text bg-body-tertiary border-end-0"><i class="bi bi-envelope text-muted"></i></span>
-                        <input type="email" id="loginEmail" class="form-control border-start-0" placeholder="name@example.com" required>
+                        <input type="email" id="loginEmail" name="email" class="form-control border-start-0" placeholder="name@example.com" required >
                     </div>
                 </div>
 
@@ -110,7 +125,7 @@
                     </div>
                     <div class="input-group">
                         <span class="input-group-text bg-body-tertiary border-end-0"><i class="bi bi-lock text-muted"></i></span>
-                        <input type="password" id="loginPassword" class="form-control border-start-0 border-end-0" placeholder="••••••••" required>
+                        <input type="password" id="loginPassword" name="password" class="form-control border-start-0 border-end-0" placeholder="••••••••" required minlength="8" maxlength="32">
                         <button class="btn btn-outline-secondary border-start-0 bg-body-tertiary text-muted" type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility()">
                             <i class="bi bi-eye-fill" id="passwordIcon"></i>
                         </button>
@@ -163,6 +178,14 @@
                 passwordIcon.className = "bi bi-eye-fill";
             }
         }
+
+        // --- alert time out  ---  
+        setTimeout(() => {
+        const alert = document.querySelector(".alert");
+        if (alert) {
+        bootstrap.Alert.getOrCreateInstance(alert).close();
+        }
+        }, 3000);
     </script>
 </body>
 </html>
