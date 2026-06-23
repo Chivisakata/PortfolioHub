@@ -120,11 +120,34 @@ try {
                 border-color: transparent;
                 box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
             }
+            /* Định hình góc bo tròn mềm mại cho menu thả xuống */
+            .dropdown-menu {
+                border-radius: 12px !important;
+                padding: 8px;
+            }
+            .dropdown-item {
+                border-radius: 8px;
+            }
         </style>
 
     </head>
 
     <body>
+        <!--Alert Messages -->
+          <?php
+            session_start();
+            if (isset($_SESSION["success"])) {
+            ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+                <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
+                    <?= htmlspecialchars($_SESSION["success"]) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            </div>
+            <?php
+                unset($_SESSION["success"]);
+            }
+        ?>
         <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color:black ;">        <!--Name on navbar-->
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2" href="#">
@@ -159,12 +182,54 @@ try {
                             <i class="bi bi-sun-fill fs-5" id="themeIcon"></i>
                         </button>
                         <!-- Auth Actions -->
-                        <button class="btn btn-outline-secondary px-4 rounded-pill" type="button" onclick="window.location.href='./pages/login.html'">Đăng nhập</button>
+                        <?php if (isset($_SESSION["userId"])): ?>
+                            <div class="dropdown" id="userDropdownBlock">
+                                <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="outline: none; box-shadow: none;">
+                                    <!-- Avatar tròn viết tắt tên -->
+                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px; font-size: 0.95rem;" id="userAvatar">
+                                        AQ
+                                    </div>
+                                    <!-- Tên hiển thị (chỉ hiện trên màn hình máy tính) -->
+                                    <span class="fw-semibold small d-none d-md-inline" id="userFullName">Trần Anh Quân</span>
+                                </a>
+
+                                <!-- Danh sách thả xuống Dropdown Menu -->
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border mt-2" aria-labelledby="profileDropdown">
+                                    <!-- Tên di động ẩn/hiện -->
+                                    <li class="px-3 py-2 border-bottom d-md-none">
+                                        <span class="d-block small fw-bold text-body" id="userFullNameMobile">Trần Anh Quân</span>
+                                        <span class="d-block text-muted" style="font-size: 0.75rem;" id="userEmailMobile">quan.tran36@gmail.com</span>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="detail.html">
+                                            <i class="bi bi-person-vcard text-primary fs-5"></i>
+                                            <span>Portfolio của tôi</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="#">
+                                            <i class="bi bi-gear text-secondary fs-5"></i>
+                                            <span>Cài đặt tài khoản</span>
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider my-1"></li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="#" onclick="handleLogout(event)">
+                                            <i class="bi bi-box-arrow-right fs-5"></i>
+                                            <span class="fw-medium">Đăng xuất</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                             </div>
+
+                        <?php else: ?>
+                            <button class="btn btn-outline-secondary px-4 rounded-pill" type="button" onclick="window.location.href='./pages/login.php'">Đăng nhập</button>
+                        <?php endif; ?>
                         <button class="btn btn-primary px-4 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" type="button">Bắt đầu ngay</button>
                     </div>
-                </div>
             </div>
-        </nav>
+        </div>
+    </nav>
 
         <!--Home-->
         <section class="home-section w-100" id="home">
@@ -276,7 +341,6 @@ try {
               
             </div>
            
-
             <!--End of users card inforamtion-->
 
             <!-- Load More Mock Action -->
@@ -299,6 +363,17 @@ try {
 
     <!--Include footer-->
     <?php include "components/footer.php";?>
-
+    
+     <!-- Bootstrap & Custom JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- alert time out  ---  
+        setTimeout(() => {
+        const alert = document.querySelector(".alert");
+        if (alert) {
+        bootstrap.Alert.getOrCreateInstance(alert).close();
+        }
+        }, 3000);
+    </script>                   
     </body>
 </html>
