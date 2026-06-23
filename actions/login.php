@@ -38,11 +38,11 @@
             header("Location: ../index.php");
             exit();
         }
-        else{
-            $errors[] = "Mật khẩu không chính xác!";
-        }     
+        else {
+            $errors[] = "Email hoặc mật khẩu không đúng!";
+        }
     } else {
-        $errors[] = "Email không tồn tại!";
+       $errors[] = "Email hoặc mật khẩu không đúng!"; 
     }
      // Nếu có lỗi, trả về lỗi
     if (!empty($errors)) {
