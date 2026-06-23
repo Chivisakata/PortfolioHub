@@ -1,0 +1,54 @@
+ <?php
+ require_once '../config/dbContext.php';
+    session_start();
+
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+
+    $errors = [];
+
+    // Kiểm tra định dạng Email
+    if (empty($email)) {
+        $errors[] = "Email không được để trống!";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Email không đúng định dạng!";
+    }
+    // Kiểm tra định dạng mật khẩu
+    $passwordPattern = '/^(?=.*[a-zA-Z0-9])[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};\':"\\\\|,.<>\/?]{8,32}$/';
+    if (empty($password)) {
+        $errors[] = "Mật khẩu không được để trống!";
+    } elseif (!preg_match($passwordPattern, $password)) {
+        // Hàm preg_match dùng để khớp chuỗi Regex trong PHP
+        $errors[] = "Mật khẩu không hợp lệ!";
+    }
+
+    //kiểm tra email và mật khẩu có tồn tại trong cơ sở dữ liệu
+    $sql = "SELECT id, email, role, hashedPsswd FROM users WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if (mysqli_num_rows($result) > 0) {
+        $user = mysqli_fetch_assoc($result);
+        if(password_verify($password, $user['hashedPsswd'])){
+            $_SESSION["userId"] = $user['id'];
+            $_SESSION["email"] = $user['email'];
+            $_SESSION["role"] = $user['role'];
+            $_SESSION["success"] = "Đăng nhập thành công!";
+            header("Location: ../index.php");
+            exit();
+        }
+        else{
+            $errors[] = "Mật khẩu không chính xác!";
+        }     
+    } else {
+        $errors[] = "Email không tồn tại!";
+    }
+     // Nếu có lỗi, trả về lỗi
+    if (!empty($errors)) {
+        $_SESSION["error"] = $errors[0];
+        header("Location: ../pages/login.php");
+        exit();
+    }
+    
+?>
