@@ -181,7 +181,7 @@
 
             <!-- Footer Link -->
             <div class="text-center mt-4 pt-2">
-                <p class="text-muted small mb-0">Đã có tài khoản? <a href="login.html" class="text-decoration-none fw-semibold">Đăng nhập</a></p>
+                <p class="text-muted small mb-0">Đã có tài khoản? <a href="login.php" class="text-decoration-none fw-semibold">Đăng nhập</a></p>
             </div>
 
         </div>
