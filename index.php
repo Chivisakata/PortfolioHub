@@ -171,6 +171,8 @@ try {
     </head>
 
     <body>
+        
+
         <!--Alert Messages -->
           <?php
             session_start();
@@ -186,6 +188,24 @@ try {
                 unset($_SESSION["success"]);
             }
         ?>
+
+        <!--Fetch Data -->
+        <?php
+        require_once 'config/dbContext.php';
+
+        $sql = "
+            SELECT profiles.id, name, pfp, field, MAX(tech) AS tech, 1250 AS views, 340 AS likes
+            FROM profiles
+            LEFT JOIN userdetails ON profiles.id = userdetails.id
+            LEFT JOIN projects ON profiles.uid = projects.uid
+            GROUP BY profiles.id, name, pfp, field
+            ORDER BY profiles.id
+            LIMIT 7
+        ";
+        $result = mysqli_query($conn, $sql);
+        $portfolios = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        ?>
+
         <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color:black ;">        <!--Name on navbar-->
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2" href="#">
@@ -225,18 +245,18 @@ try {
                                 <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="outline: none; box-shadow: none;">
                                     <!-- Avatar tròn viết tắt tên -->
                                     <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px; font-size: 0.95rem;" id="userAvatar">
-                                        AQ
+                                        <?php echo isset($_SESSION["profileName"]) ? substr($_SESSION["profileName"], 0, 2) : 'U    '; ?>
                                     </div>
                                     <!-- Tên hiển thị (chỉ hiện trên màn hình máy tính) -->
-                                    <span class="fw-semibold small d-none d-md-inline" id="userFullName">Trần Anh Quân</span>
+                                    <span class="fw-semibold small d-none d-md-inline" id="userFullName"><?php echo isset($_SESSION["profileName"]) ? $_SESSION["profileName"] : ''; ?></span>
                                 </a>
 
                                 <!-- Danh sách thả xuống Dropdown Menu -->
                                 <ul class="dropdown-menu dropdown-menu-end shadow-lg border mt-2" aria-labelledby="profileDropdown">
                                     <!-- Tên di động ẩn/hiện -->
                                     <li class="px-3 py-2 border-bottom d-md-none">
-                                        <span class="d-block small fw-bold text-body" id="userFullNameMobile">Trần Anh Quân</span>
-                                        <span class="d-block text-muted" style="font-size: 0.75rem;" id="userEmailMobile">quan.tran36@gmail.com</span>
+                                        <span class="d-block small fw-bold text-body" id="userFullNameMobile"><?php echo isset($_SESSION["profileName"]) ? $_SESSION["profileName"] : ''; ?></span>
+                                        <span class="d-block text-muted" style="font-size: 0.75rem;" id="userEmailMobile"><?php echo isset($_SESSION["profileEmail"]) ? $_SESSION["profileEmail"] : ''; ?></span>
                                     </li>
                                     <li>
                                         <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="detail.html">
@@ -252,7 +272,7 @@ try {
                                     </li>
                                     <li><hr class="dropdown-divider my-1"></li>
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="#" onclick="handleLogout(event)">
+                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="actions/signout.php">
                                             <i class="bi bi-box-arrow-right fs-5"></i>
                                             <span class="fw-medium">Đăng xuất</span>
                                         </a>

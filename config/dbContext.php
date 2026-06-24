@@ -4,14 +4,9 @@ $user = "root";
 $password = "";
 $database = "portfoliohub";
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+$conn = mysqli_connect($host, $user, $password, $database);
+
+if (!$conn) {
+    die("Kết nối thất bại: " . mysqli_connect_error());
 }
-
-$conn = new mysqli($host, $user, $password, $database);
-
-if ($conn->connect_error) {
-    die("Kết nối thất bại: " . $conn->connect_error);
-}
-
 ?>

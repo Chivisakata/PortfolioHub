@@ -50,6 +50,14 @@
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "iss", $role, $email, $hashedPassword);
         if (mysqli_stmt_execute($stmt)) {
+            // Lấy ID của người dùng mới được tạo
+            $new_user_id = mysqli_insert_id($conn);
+            $sql_profile = "INSERT INTO profiles (uid) VALUES (?)";
+            $stmt_profile = mysqli_prepare($conn, $sql_profile);
+            mysqli_stmt_bind_param($stmt_profile, "i", $new_user_id);
+            mysqli_stmt_execute($stmt_profile);
+            mysqli_stmt_close($stmt_profile);
+            // Đăng ký thành công
             $_SESSION["success"] = "Đăng ký thành công! Vui lòng đăng nhập.";
             header("Location: ../pages/register.php");
             exit();
