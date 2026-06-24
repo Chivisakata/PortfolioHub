@@ -8,12 +8,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-try {
-    // Change $conn or $db to $pdo right here:
-    $pdo = new PDO("mysql:host=$host;dbname=$database;charset=utf8mb4", $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    die("Kết nối thất bại: " . mysqli_connect_error());
+$conn = new mysqli($host, $user, $password, $database);
+
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
 }
 
 ?>

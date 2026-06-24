@@ -20,13 +20,24 @@ try {
         LIMIT 7
     ";
 
-    $stmt = $pdo->query($query);
-    $portfolios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Run query with MySQLi
+    $result = $conn->query($query);
 
-} catch(PDOException $e) {
-    die("Query failed: " . $e->getMessage());
-}
+    if (!$result) {
+        throw new Exception("Query failed: " . $conn->error);
+    }
+
+    // Fetch all rows as associative array
+    $portfolios = [];
+    while ($row = $result->fetch_assoc()) {
+        $portfolios[] = $row;
+    }
+
+    } catch(Exception $e) {
+        die("Query failed: " . $e->getMessage());
+    }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -53,9 +64,22 @@ try {
             }
 
             body {
-                font-family: var(--font-family);
-                overflow-x: hidden;
-            }
+            font-family: var(--font-family);
+            transition: background-color 0.3s ease, color 0.3s ease;        /* Transition animation when changing theme */
+            overflow-x: hidden;
+        }
+            .feature-icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            color: #4f46e5;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
 
             .gradient-text {
                 background: var(--primary-gradient);
@@ -100,6 +124,20 @@ try {
                 width: 100%;
                 padding: 8px;
                 color: var(--bs-body-color);
+            }
+
+            .card-portfolio {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--bs-body-bg);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            }
+
+            .card-portfolio:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 30px rgba(79, 70, 229, 0.45);
             }
 
             .category-badge {
@@ -225,7 +263,7 @@ try {
                         <?php else: ?>
                             <button class="btn btn-outline-secondary px-4 rounded-pill" type="button" onclick="window.location.href='./pages/login.php'">Đăng nhập</button>
                         <?php endif; ?>
-                        <button class="btn btn-primary px-4 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" type="button">Bắt đầu ngay</button>
+                        <button class="btn btn-primary px-4 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" type="button" onclick="window.location.href='./pages/register.php'">Bắt đầu ngay</button>
                     </div>
             </div>
         </div>
@@ -325,7 +363,7 @@ try {
                                             <span><i class="bi bi-eye me-1"></i><?= (int)$portfolio['views'] ?></span>          <!--Add views and likes tables-->
                                             <span><i class="bi bi-heart me-1"></i><?= (int)$portfolio['likes'] ?></span>        <!--Add views and likes tables-->
                                         </div>
-                                        <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['profiles.id'] ?>'">
+                                        <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['id'] ?>'">
                                             Xem Portfolio <i class="bi bi-arrow-right"></i>
                                         </button>
                                     </div>
@@ -353,11 +391,86 @@ try {
         </div>
     </section>
 
+                 
+        <!-- Platform Features -->
+    <section class="py-5 bg-body border-top" id="features">
+        <div class="container">
+            <div class="text-center max-w-2xl mx-auto mb-5">
+                <h2 class="fw-bold text-body">Tính Năng Giúp Bạn Khác Biệt</h2>
+                <p class="text-muted">Trang bị các công cụ chuyên nghiệp để hỗ trợ hồ sơ của bạn đạt tỉ lệ tuyển dụng cao nhất</p>
+            </div>
+
+            <div class="row g-4 mt-2">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-transparent p-4">
+                        <div class="feature-icon-box">
+                            <i class="bi bi-layout-text-window-reverse"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Mẫu Thiết Kế Sẵn Có</h4>
+                        <p class="text-muted">Bộ sưu tập mẫu thiết kế đa dạng, hiện đại và tối ưu hóa tối đa cho các ngành nghề sáng tạo.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-transparent p-4">
+                        <div class="feature-icon-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); color: #3b82f6;">
+                            <i class="bi bi-globe"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Tên Miền Tùy Chỉnh</h4>
+                        <p class="text-muted">Kết nối portfolio với tên miền cá nhân của bạn để nâng tầm thương hiệu riêng biệt chuyên nghiệp.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-transparent p-4">
+                        <div class="feature-icon-box" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%); color: #10b981;">
+                            <i class="bi bi-bar-chart-line-fill"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Phân Tích Đo Lường</h4>
+                        <p class="text-muted">Theo dõi lưu lượng khách truy cập, xem vùng hoạt động và nắm bắt các số liệu từ nhà tuyển dụng.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works Step-by-Step -->
+    <section class="py-5" id="how-it-works">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-body">Quy Trình Hoạt Động Cực Kỳ Đơn Giản</h2>
+                <p class="text-muted">Thiết kế hoàn thiện chỉ với 3 bước cơ bản nhanh chóng</p>
+            </div>
+
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-4 text-center">
+                    <div class="p-4 bg-body rounded-4 shadow-sm border h-100">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 fs-3 fw-bold" style="width: 60px; height: 60px;">1</div>
+                        <h5 class="fw-bold">Chọn Giao Diện Ưu Thích</h5>
+                        <p class="text-muted mb-0">Lựa chọn từ kho template bắt mắt từ đơn giản đến nghệ thuật độc đáo.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="p-4 bg-body rounded-4 shadow-sm border h-100">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 fs-3 fw-bold" style="width: 60px; height: 60px;">2</div>
+                        <h5 class="fw-bold">Cập Nhật Thông Tin</h5>
+                        <p class="text-muted mb-0">Điền thông tin giới thiệu, các dự án, kỹ năng của bạn mà không cần đụng đến code.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="p-4 bg-body rounded-4 shadow-sm border h-100">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 fs-3 fw-bold" style="width: 60px; height: 60px;">3</div>
+                        <h5 class="fw-bold">Xuất Bản & Chia Sẻ</h5>
+                        <p class="text-muted mb-0">Chia sẻ đường dẫn chuyên nghiệp đến các nhà tuyển dụng hàng đầu trên thế giới.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="py-5 text-white" style="background: var(--primary-gradient);">
         <div class="container py-4 text-center">
             <h2 class="fw-bold mb-3 display-6">Sẵn Sàng Xây Dựng Thương Hiệu Cá Nhân?</h2>
             <p class="lead mb-4">Tham gia cùng hơn 100,000+ lập trình viên và nhà thiết kế đang tỏa sáng mỗi ngày.</p>
-                    <button class="btn btn-light text-primary fw-bold px-5 py-3 rounded-pill shadow"  onclick="window.location.href='./pages/login.html'" >Tạo Portfolio của Bạn Ngay</button>
+                    <button class="btn btn-light text-primary fw-bold px-5 py-3 rounded-pill shadow"  onclick="window.location.href='./pages/login.php'" >Tạo Portfolio của Bạn Ngay</button>
         </div>
     </section>
 
@@ -374,6 +487,33 @@ try {
         bootstrap.Alert.getOrCreateInstance(alert).close();
         }
         }, 3000);
+
+        // --- Light/Dark Mode Toggle ---
+        const themeToggleBtn = document.getElementById("themeToggleBtn");
+        const themeIcon = document.getElementById("themeIcon");
+        const htmlElement = document.documentElement;
+
+        // Initialize Theme
+        const storedTheme = localStorage.getItem("theme") || "light";
+        htmlElement.setAttribute("data-bs-theme", storedTheme);
+        updateThemeIcon(storedTheme);
+
+        themeToggleBtn.addEventListener("click", () => {
+            const currentTheme = htmlElement.getAttribute("data-bs-theme");
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            htmlElement.setAttribute("data-bs-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            updateThemeIcon(newTheme);
+            showToast(`Đã chuyển sang chế độ ${newTheme === 'light' ? 'Sáng' : 'Tối'}!`);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === "dark") {
+                themeIcon.className = "bi bi-moon-fill fs-5";
+            } else {
+                themeIcon.className = "bi bi-sun-fill fs-5";
+            }
+        }
     </script>                   
     </body>
 </html>
