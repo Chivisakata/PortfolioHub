@@ -4,16 +4,9 @@ $user = "root";
 $password = "";
 $database = "portfoliohub";
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+$conn = mysqli_connect($host, $user, $password, $database);
 
-try {
-    // Change $conn or $db to $pdo right here:
-    $pdo = new PDO("mysql:host=$host;dbname=$database;charset=utf8mb4", $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
+if (!$conn) {
     die("Kết nối thất bại: " . mysqli_connect_error());
 }
-
 ?>

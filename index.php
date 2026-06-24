@@ -1,34 +1,4 @@
 
-<?php
-require_once 'config/dbContext.php';
-
-try {
-    $query = "
-        SELECT 
-            profiles.id, 
-            name, 
-            pfp, 
-            field AS field, 
-            MAX(tech) AS tech, 
-            1250 AS views,  -- Hardcoded placeholder for layout testing
-            340 AS likes    -- Hardcoded placeholder for layout testing
-        FROM profiles
-        LEFT JOIN userdetails ON profiles.id = userdetails.id
-        LEFT JOIN projects ON profiles.uid = projects.uid
-        GROUP BY profiles.id, name, pfp, field
-        ORDER BY profiles.id ASC 
-        LIMIT 7
-    ";
-
-    $stmt = $pdo->query($query);
-    $portfolios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-} catch(PDOException $e) {
-    die("Query failed: " . $e->getMessage());
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
     <head>
@@ -133,6 +103,8 @@ try {
     </head>
 
     <body>
+        
+
         <!--Alert Messages -->
           <?php
             session_start();
@@ -148,6 +120,24 @@ try {
                 unset($_SESSION["success"]);
             }
         ?>
+
+        <!--Fetch Data -->
+        <?php
+        require_once 'config/dbContext.php';
+
+        $sql = "
+            SELECT profiles.id, name, pfp, field, MAX(tech) AS tech, 1250 AS views, 340 AS likes
+            FROM profiles
+            LEFT JOIN userdetails ON profiles.id = userdetails.id
+            LEFT JOIN projects ON profiles.uid = projects.uid
+            GROUP BY profiles.id, name, pfp, field
+            ORDER BY profiles.id
+            LIMIT 7
+        ";
+        $result = mysqli_query($conn, $sql);
+        $portfolios = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        ?>
+
         <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color:black ;">        <!--Name on navbar-->
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2" href="#">
@@ -325,7 +315,7 @@ try {
                                             <span><i class="bi bi-eye me-1"></i><?= (int)$portfolio['views'] ?></span>          <!--Add views and likes tables-->
                                             <span><i class="bi bi-heart me-1"></i><?= (int)$portfolio['likes'] ?></span>        <!--Add views and likes tables-->
                                         </div>
-                                        <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['profiles.id'] ?>'">
+                                        <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['id'] ?>'">
                                             Xem Portfolio <i class="bi bi-arrow-right"></i>
                                         </button>
                                     </div>
