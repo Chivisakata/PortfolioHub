@@ -51,6 +51,7 @@ try {
     while ($row = $resultProjects->fetch_assoc()) {
         $projects[] = $row;
     }
+  
 
     // Showing not set avatar with the initials of user's name
     $nameParts = explode(" ", $user['name']);

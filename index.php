@@ -1,45 +1,4 @@
 
-<?php
-require_once 'config/dbContext.php';
-
-try {
-    $query = "
-        SELECT 
-            profiles.id, 
-            name, 
-            pfp, 
-            field AS field, 
-            MAX(tech) AS tech, 
-            1250 AS views,  -- Hardcoded placeholder for layout testing
-            340 AS likes    -- Hardcoded placeholder for layout testing
-        FROM profiles
-        LEFT JOIN userdetails ON profiles.id = userdetails.id
-        LEFT JOIN projects ON profiles.uid = projects.uid
-        GROUP BY profiles.id, name, pfp, field
-        ORDER BY profiles.id ASC 
-        LIMIT 7
-    ";
-
-    // Run query with MySQLi
-    $result = $conn->query($query);
-
-    if (!$result) {
-        throw new Exception("Query failed: " . $conn->error);
-    }
-
-    // Fetch all rows as associative array
-    $portfolios = [];
-    while ($row = $result->fetch_assoc()) {
-        $portfolios[] = $row;
-    }
-
-    } catch(Exception $e) {
-        die("Query failed: " . $e->getMessage());
-    }
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
     <head>
@@ -189,22 +148,47 @@ try {
             }
         ?>
 
-        <!--Fetch Data -->
+        <!--Fetch data -->
         <?php
         require_once 'config/dbContext.php';
 
-        $sql = "
-            SELECT profiles.id, name, pfp, field, MAX(tech) AS tech, 1250 AS views, 340 AS likes
-            FROM profiles
-            LEFT JOIN userdetails ON profiles.id = userdetails.id
-            LEFT JOIN projects ON profiles.uid = projects.uid
-            GROUP BY profiles.id, name, pfp, field
-            ORDER BY profiles.id
-            LIMIT 7
-        ";
-        $result = mysqli_query($conn, $sql);
-        $portfolios = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        try {
+            $query = "
+                SELECT 
+                    profiles.uid, 
+                    name, 
+                    pfp, 
+                    field AS field, 
+                    MAX(tech) AS tech, 
+                    1250 AS views,  -- Hardcoded placeholder for layout testing
+                    340 AS likes    -- Hardcoded placeholder for layout testing
+                FROM profiles
+                LEFT JOIN userdetails ON profiles.id = userdetails.id
+                LEFT JOIN projects ON profiles.uid = projects.uid
+                GROUP BY profiles.id, name, pfp, field
+                ORDER BY profiles.id ASC 
+                LIMIT 7
+            ";
+
+            // Run query with MySQLi
+            $result = $conn->query($query);
+
+            if (!$result) {
+                throw new Exception("Query failed: " . $conn->error);
+            }
+
+            // Fetch all rows as associative array
+            $portfolios = [];
+            while ($row = $result->fetch_assoc()) {
+                $portfolios[] = $row;
+            }
+
+            } catch(Exception $e) {
+                die("Query failed: " . $e->getMessage());
+            }
         ?>
+
+
 
         <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color:black ;">        <!--Name on navbar-->
             <div class="container">
@@ -383,7 +367,7 @@ try {
                                             <span><i class="bi bi-eye me-1"></i><?= (int)$portfolio['views'] ?></span>          <!--Add views and likes tables-->
                                             <span><i class="bi bi-heart me-1"></i><?= (int)$portfolio['likes'] ?></span>        <!--Add views and likes tables-->
                                         </div>
-                                        <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['id'] ?>'">
+                                        <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['uid'] ?>'">
                                             Xem Portfolio <i class="bi bi-arrow-right"></i>
                                         </button>
                                     </div>
