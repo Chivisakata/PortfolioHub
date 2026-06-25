@@ -22,8 +22,8 @@ try {
             website,
             location
         FROM profiles
-        LEFT JOIN userdetails ON userdetails.id = profiles.id
-        WHERE userdetails.id = ?
+        LEFT JOIN userdetails ON userdetails.uid = profiles.uid
+        WHERE userdetails.uid = ?
     ";
 
     $stmt = $conn->prepare($userQuery);
