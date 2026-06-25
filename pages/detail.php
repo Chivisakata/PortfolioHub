@@ -1,6 +1,6 @@
 
 <?php
-// Adjust this path if your config folder is up one directory level
+
 require_once '../config/dbContext.php'; 
 
 // 1. Capture the unique user id sent from the URL query parameter (?id=X)
@@ -18,14 +18,19 @@ try {
             profiles.pfp AS pfp, 
             field,
             bio,
-            email
+            email,
+            website,
+            location
         FROM profiles
         LEFT JOIN userdetails ON userdetails.id = profiles.id
-        WHERE userdetails.id = :id
+        WHERE userdetails.id = ?
     ";
-    $stmt = $pdo->prepare($userQuery);
-    $stmt->execute(['id' => $userId]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $stmt = $conn->prepare($userQuery);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
     if (!$user) {
         die("Người dùng này không tồn tại trong hệ thống.");
@@ -35,23 +40,30 @@ try {
     $projectQuery = "
         SELECT project_name, tech, description 
         FROM projects 
-        WHERE uid = :id
+        WHERE uid =?
     ";
-    $stmtProject = $pdo->prepare($projectQuery);
-    $stmtProject->execute(['id' => $userId]);
-    $projects = $stmtProject->fetchAll(PDO::FETCH_ASSOC);
 
-    // Dynamic clean Initials generator for the profile circle icon (e.g., "Trần Anh Quân" -> "AQ")
+    $stmtProject = $conn->prepare($projectQuery);
+    $stmtProject->bind_param("i", $userId);
+    $stmtProject->execute();
+    $resultProjects = $stmtProject->get_result();
+    $projects = [];
+    while ($row = $resultProjects->fetch_assoc()) {
+        $projects[] = $row;
+    }
+
+    // Showing not set avatar with the initials of user's name
     $nameParts = explode(" ", $user['name']);
     $initials = (count($nameParts) >= 2) 
         ? mb_substr($nameParts[count($nameParts)-2], 0, 1) . mb_substr($nameParts[count($nameParts)-1], 0, 1)
         : mb_substr($user['name'], 0, 2);
     $initials = mb_strtoupper($initials);
 
-} catch(PDOException $e) {
+} catch(Exception $e) {
     die("Lỗi kết nối cơ sở dữ liệu: " . $e->getMessage());
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -73,6 +85,7 @@ try {
         .timeline-item::before { content: ''; position: absolute; left: -7px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background-color: #4f46e5; }
         .card-custom { border-radius: 20px; border: 1px solid var(--bs-border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
         p {font-size: 18px;}
+        .web:hover{cursor:pointer;}
     </style>
 </head>
 <body class="bg-body-tertiary">
@@ -110,7 +123,8 @@ try {
                     <div class="mb-4">
                         <h6 class="fw-bold mb-3"><i class="bi bi-info-circle me-2 text-primary"></i>Thông tin cơ bản</h6>
                         <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-envelope text-muted"></i><span class="text-muted"><?php echo $user['email']?></span></div>
-                        <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-geo-alt text-muted"></i><span class="text-muted">Việt Nam</span></div>
+                        <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-geo-alt text-muted"></i><span class="text-muted"><?php echo $user['location']?></span></div>
+                        <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-globe text-muted"></i><span class="text-primary web""><?php echo $user['website']?></span></div>
                     </div>
                 </div>
             </div>
