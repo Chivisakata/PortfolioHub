@@ -1,4 +1,6 @@
-
+<?php
+    session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
     <head>
@@ -130,11 +132,8 @@
     </head>
 
     <body>
-        
-
         <!--Alert Messages -->
           <?php
-            session_start();
             if (isset($_SESSION["success"])) {
             ?>
             <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
@@ -197,8 +196,9 @@
                 <i><image src="images/logo.jpg" style="width:50px; height:50px;"></image></i>
                 </span>
                 <span class="fs-4 fw-bold text-body">Portfolio<span class="text-primary">Hub</span></span>
-                </a>
                 
+                </a>
+                    
                 <!--Hamburger button when window scale down-->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -224,7 +224,7 @@
                             <i class="bi bi-sun-fill fs-5" id="themeIcon"></i>
                         </button>
                         <!-- Auth Actions -->
-                        <?php if (isset($_SESSION["userId"])): ?>
+                        <?php if (isset($_SESSION["userId"])):?>
                             <div class="dropdown" id="userDropdownBlock">
                                 <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="outline: none; box-shadow: none;">
                                     <!-- Avatar tròn viết tắt tên -->

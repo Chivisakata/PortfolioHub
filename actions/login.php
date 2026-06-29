@@ -43,6 +43,7 @@
             $_SESSION["profileName"] = $profile['name'];
             $_SESSION["profileEmail"] = $profile['email'];
             $_SESSION["success"] = "Đăng nhập thành công!";
+            // var_dump($_SESSION);
             header("Location: ../index.php");
             exit();
         }
@@ -55,8 +56,8 @@
      // Nếu có lỗi, trả về lỗi
     if (!empty($errors)) {
         $_SESSION["error"] = $errors[0];
-        header("Location: ../pages/login.php");
-        exit();
+        // header("Location: ../pages/login.php");
+        // exit();
     }
     
 ?>

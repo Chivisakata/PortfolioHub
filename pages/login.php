@@ -1,3 +1,6 @@
+<?php
+    session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
 <head>
@@ -58,7 +61,6 @@
 <body class="bg-body-tertiary">
 
 <?php
-    session_start();
     if (isset($_SESSION["error"])) {
     ?>
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
