@@ -229,7 +229,7 @@
                                 <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="outline: none; box-shadow: none;">
                                     <!-- Avatar tròn viết tắt tên -->
                                     <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px; font-size: 0.95rem;" id="userAvatar">
-                                        <?php echo isset($_SESSION["profileName"]) ? substr($_SESSION["profileName"], 0, 2) : 'U    '; ?>
+                                        <?php echo isset($_SESSION["profileName"]) ? substr($_SESSION["profileName"], 0, 2) : 'U'; ?>
                                     </div>
                                     <!-- Tên hiển thị (chỉ hiện trên màn hình máy tính) -->
                                     <span class="fw-semibold small d-none d-md-inline" id="userFullName"><?php echo isset($_SESSION["profileName"]) ? $_SESSION["profileName"] : ''; ?></span>
@@ -262,12 +262,13 @@
                                         </a>
                                     </li>
                                 </ul>
-                             </div>
+                            </div>
 
                         <?php else: ?>
+                            <!-- Chỉ hiển thị cụm nút này khi CHƯA đăng nhập -->
                             <button class="btn btn-outline-secondary px-4 rounded-pill" type="button" onclick="window.location.href='./pages/login.php'">Đăng nhập</button>
+                            <button class="btn btn-primary px-4 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" type="button" onclick="window.location.href='./pages/register.php'">Bắt đầu ngay</button>
                         <?php endif; ?>
-                        <button class="btn btn-primary px-4 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" type="button" onclick="window.location.href='./pages/register.php'">Bắt đầu ngay</button>
                     </div>
             </div>
         </div>

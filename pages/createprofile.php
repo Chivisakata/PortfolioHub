@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi" data-bs-theme="light">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tạo Portfolio của bạn - PortfoliHub</title>
+    <title>Tạo Portfolio của bạn - PortfolioHub</title>
     
     <!-- Bootstrap 5.3.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -52,15 +52,17 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top bg-body border-bottom py-3" style="backdrop-filter: blur(8px); background: rgba(var(--bs-body-bg-rgb), 0.8) !important; z-index: 1030;">
         <div class="container-fluid px-4">
-            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index.php">
-                <span class="badge bg-primary p-2"><i class="bi bi-briefcase-fill"></i></span>
-                <span>Portfoli<span class="text-primary">Hub</span></span>
-            </a>
+            <a class="navbar-brand d-flex align-items-center gap-2" href="../index.php">
+                <span class="p-2 rounded-3 d-flex align-items-center justify-content-center text-white">
+                <i><image src="../images/logo.jpg" style="width:50px; height:50px;"></image></i>
+                </span>
+                <span class="fs-4 fw-bold text-body">Portfolio<span class="text-primary">Hub</span></span>
+                </a>
             <div class="d-flex align-items-center gap-2">
                 <!-- Theme Switcher -->
-                <button class="btn btn-link text-body p-2 me-2" id="themeToggleBtn" title="Đổi giao diện Sáng/Tối">
-                    <i class="bi bi-sun-fill fs-5" id="themeIcon"></i>
-                </button>
+                <button class="btn btn-link text-body p-2" id="themeToggleBtn" type="button" aria-label="Đổi chủ đề" title="Đổi giao diện Sáng/Tối">
+                            <i class="bi bi-sun-fill fs-5" id="themeIcon"></i>
+                        </button>
                 <a href="../index.php" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
                     <i class="bi bi-arrow-left me-1"></i> Quay lại
                 </a>
@@ -542,6 +544,33 @@
         renderExperiences();
         renderProjects();
     };
+
+
+     const themeToggleBtn = document.getElementById("themeToggleBtn");
+        const themeIcon = document.getElementById("themeIcon");
+        const htmlElement = document.documentElement;
+
+        // Initialize Theme
+        const storedTheme = localStorage.getItem("theme") || "light";
+        htmlElement.setAttribute("data-bs-theme", storedTheme);
+        updateThemeIcon(storedTheme);
+
+        themeToggleBtn.addEventListener("click", () => {
+            const currentTheme = htmlElement.getAttribute("data-bs-theme");
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            htmlElement.setAttribute("data-bs-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            updateThemeIcon(newTheme);
+            showToast(`Đã chuyển sang chế độ ${newTheme === 'light' ? 'Sáng' : 'Tối'}!`);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === "dark") {
+                themeIcon.className = "bi bi-moon-fill fs-5";
+            } else {
+                themeIcon.className = "bi bi-sun-fill fs-5";
+            }
+        }
     </script>
 </body>
 </html>
