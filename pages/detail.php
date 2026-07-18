@@ -144,7 +144,7 @@ try {
                                 <div class="col-md-6">
                                     <div class="border rounded-4 p-3 h-100 bg-body-tertiary">
                                         <h6 class="fw-bold mb-2">💡 <?php echo htmlspecialchars($project['project_name']); ?></h6>
-                                        <p class="text-muted small mb-3">Dự án xây dựng và phát triển giải pháp tối ưu hóa dữ liệu.</p>
+                                        <p class="text-muted small mb-3"><?php echo $project['description']; ?></p>
                                         <div class="d-flex gap-1 flex-wrap">
                                             <?php 
                                             // Splitting technolgies listed with commas (e.g. "PHP, MySQL" -> individual badges)
