@@ -1,4 +1,4 @@
- <?php
+<?php
  require_once '../config/dbContext.php';
     session_start();
 
@@ -56,8 +56,7 @@
      // Nếu có lỗi, trả về lỗi
     if (!empty($errors)) {
         $_SESSION["error"] = $errors[0];
-        // header("Location: ../pages/login.php");
-        // exit();
+        header("Location: ../pages/login.php");
+        exit();
     }
-    
 ?>
