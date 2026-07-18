@@ -154,19 +154,19 @@
         try {
             $query = "
                 SELECT 
-                    profiles.uid, 
-                    name, 
-                    pfp, 
-                    field AS field, 
-                    MAX(tech) AS tech, 
-                    1250 AS views,  -- Hardcoded placeholder for layout testing
-                    340 AS likes    -- Hardcoded placeholder for layout testing
-                FROM profiles
-                LEFT JOIN userdetails ON profiles.id = userdetails.id
-                LEFT JOIN projects ON profiles.uid = projects.uid
-                GROUP BY profiles.id, name, pfp, field
-                ORDER BY profiles.id ASC 
-                LIMIT 7
+                    p.uid, 
+                    p.name, 
+                    p.pfp, 
+                    ud.field AS field, -- Lấy field từ bảng userdetails
+                    MAX(pj.tech) AS tech, -- Lấy tech từ bảng projects
+                    1250 AS views,  
+                    340 AS likes    
+                FROM profiles p
+                LEFT JOIN userdetails ud ON p.uid = ud.uid 
+                LEFT JOIN projects pj ON p.uid = pj.uid
+                GROUP BY p.uid, p.name, p.pfp, ud.field
+                ORDER BY p.id ASC 
+                LIMIT 15
             ";
 
             // Run query with MySQLi
@@ -243,7 +243,7 @@
                                         <span class="d-block text-muted" style="font-size: 0.75rem;" id="userEmailMobile"><?php echo isset($_SESSION["profileEmail"]) ? $_SESSION["profileEmail"] : ''; ?></span>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="detail.html">
+                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="pages/detail.php?id=<?= $_SESSION['userId'] ?>">
                                             <i class="bi bi-person-vcard text-primary fs-5"></i>
                                             <span>Portfolio của tôi</span>
                                         </a>
@@ -474,7 +474,7 @@
         <div class="container py-4 text-center">
             <h2 class="fw-bold mb-3 display-6">Sẵn Sàng Xây Dựng Thương Hiệu Cá Nhân?</h2>
             <p class="lead mb-4">Tham gia cùng hơn 100,000+ lập trình viên và nhà thiết kế đang tỏa sáng mỗi ngày.</p>
-                    <button class="btn btn-light text-primary fw-bold px-5 py-3 rounded-pill shadow"  onclick="window.location.href='./pages/login.php'" >Tạo Portfolio của Bạn Ngay</button>
+                    <button class="btn btn-light text-primary fw-bold px-5 py-3 rounded-pill shadow"  onclick="window.location.href='./pages/createprofile.php'" >Tạo Portfolio của Bạn Ngay</button>
         </div>
     </section>
 
