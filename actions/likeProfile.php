@@ -5,7 +5,7 @@ require_once '../config/dbContext.php';
 $error = [];
 
 //Check to make sure admin hijack not happening
-$likedBy = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : -1; 
+$likedBy = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : -1; 
 $uid = isset($_POST['uid']) ? (int)$_POST['uid'] : -1; // The profile being liked
 
 //Check if user is login
@@ -54,7 +54,7 @@ $stmt->close();
 
 
 // 5. Un-commented redirection to make it work seamlessly on your live site
-header("Location: profile.php?id=" . $uid);
+header("Location: ../pages/detail.php?id=" . $uid);
 exit();
 
 ?>

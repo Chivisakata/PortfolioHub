@@ -66,7 +66,7 @@ try {
 }
 
 // 5. Updated Login Fallback to -1 (Fixes the admin ID 0 collision)
-$currentLoggedInUser = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : -1;
+$currentLoggedInUser = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : -1;
 $hasLiked = false;
 
 if ($currentLoggedInUser !== -1) {
@@ -167,7 +167,7 @@ $stmtCount->close();
                                 </li>
                                 <li><hr class="dropdown-divider my-1"></li>
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="actions/signout.php">
+                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="../actions/signout.php">
                                         <i class="bi bi-box-arrow-right fs-5"></i>
                                         <span class="fw-medium">Đăng xuất</span>
                                     </a>
@@ -278,7 +278,7 @@ $stmtCount->close();
                 <div class="col-lg-8">
                     <div class="card card-custom p-4 bg-body mb-4">
                         <h4 class="fw-bold mb-3"><i class="bi bi-person text-primary me-2"></i>Giới thiệu bản thân</h4>
-                        <p class="text-muted leading-relaxed mb-0"><?php echo htmlspecialchars($user['bio'])?></p>
+                        <p class="text-muted leading-relaxed mb-0"><?php echo ($user['bio'])?></p>
                     </div>
 
                     <div class="card card-custom p-4 bg-body mb-4">

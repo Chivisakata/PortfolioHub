@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -110,8 +112,7 @@ if (!empty($keyword)) {
     </style>
 </head>
 <body>
-<!-- Navbar (Thanh điều hướng cố định đã sửa responsive) -->
-    <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); border-color: black;">
+  <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); border-color: black;">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="../index.php">
                 <span class="p-2 rounded-3 d-flex align-items-center justify-content-center text-white">
@@ -160,7 +161,7 @@ if (!empty($keyword)) {
                                 </li>
                                 <li><hr class="dropdown-divider my-1"></li>
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="actions/signout.php">
+                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="../actions/signout.php">
                                         <i class="bi bi-box-arrow-right fs-5"></i>
                                         <span class="fw-medium">Đăng xuất</span>
                                     </a>
@@ -177,6 +178,8 @@ if (!empty($keyword)) {
             </div>
         </div>
     </nav>
+
+
     <div calss="container" style="margin-top:130px;">
         <div class="search-container mt-4 mb-4">
         <i class="bi bi-search text-secondary fs-5 me-2"></i>
@@ -243,6 +246,7 @@ if (!empty($keyword)) {
             <?php endif; ?>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // --- Light/Dark Mode Toggle ---
         const themeToggleBtn = document.getElementById("themeToggleBtn");
