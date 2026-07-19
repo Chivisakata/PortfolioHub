@@ -58,7 +58,6 @@
 
             .home-section {
                 padding: 120px 0 80px 0;
-                background: -webkit-linear-gradient(to right, rgba(48,207,208,.2), rgba(51,8,103,.2));
                 background: linear-gradient(to right, rgba(48,207,208,.3), rgba(51,8,103,.3))                     /* For newer version of browser */
             }
 
@@ -87,7 +86,7 @@
                 color: var(--bs-body-color);
             }
 
-            .card-portfolio {
+           .card-portfolio {
             border: none;
             border-radius: 16px;
             overflow: hidden;
@@ -152,19 +151,21 @@
         require_once 'config/dbContext.php';
 
         try {
+            // Cập nhật câu SQL: Lấy thêm cột ud.skills và thêm vào GROUP BY
             $query = "
                 SELECT 
                     p.uid, 
                     p.name, 
                     p.pfp, 
-                    ud.field AS field, -- Lấy field từ bảng userdetails
-                    MAX(pj.tech) AS tech, -- Lấy tech từ bảng projects
+                    ud.field AS field,
+                    ud.skills AS skills,
+                    MAX(pj.tech) AS tech,
                     1250 AS views,  
                     340 AS likes    
                 FROM profiles p
                 LEFT JOIN userdetails ud ON p.uid = ud.uid 
                 LEFT JOIN projects pj ON p.uid = pj.uid
-                GROUP BY p.uid, p.name, p.pfp, ud.field
+                GROUP BY p.uid, p.name, p.pfp, ud.field, ud.skills
                 ORDER BY p.id ASC 
                 LIMIT 15
             ";
@@ -290,9 +291,14 @@
                         <div class="search-container mb-4">
                             <i class="bi bi-search text-secondary fs-5 me-2"></i>
                             <input type="text" id="homeSearchInput" placeholder="Tìm kiếm tài năng, kỹ năng (ví dụ: React, UI/UX, Figma...)" aria-label="Tìm kiếm portfolio">
-                            <button class="btn btn-primary px-4 py-2 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" onclick="triggerhomeSearch()">Tìm</button>
+                            
+                            <!-- Cập nhật lại thuộc tính onclick để truyền kèm giá trị của ô input -->
+                            <button class="btn btn-primary px-4 py-2 rounded-pill shadow-sm" 
+                                    style="background: var(--primary-gradient); border: none;" 
+                                    onclick="const kw = encodeURIComponent(document.getElementById('homeSearchInput').value); window.location.href='./pages/searchingResult.php?keyword=' + kw;">
+                                Tìm
+                            </button>
                         </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -331,9 +337,6 @@
                     <p class="text-muted">Được chọn lọc và bình chọn bởi cộng đồng chất lượng</p>
                 </div>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-outline-secondary rounded-pill btn-sm px-3" onclick="sortPortfolios('views')">
-                        <i class="bi bi-fire text-danger me-1"></i>Xem nhiều nhất
-                    </button>
                     <button class="btn btn-outline-secondary rounded-pill btn-sm px-3" onclick="sortPortfolios('likes')">
                         <i class="bi bi-heart-fill text-danger me-1"></i>Yêu thích nhất
                     </button>
@@ -342,49 +345,60 @@
 
             <!-- Portfolio Grid -->
             <div class="row g-4" id="portfolioGrid">
-                <!--card-->
-                <div class="row g-4" id="portfolioGrid">
-                    <?php if (!empty($portfolios)): ?>
-                        <?php foreach ($portfolios as $portfolio): ?>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="card card-portfolio h-100 p-3">
-                                    <div class="d-flex align-items-center gap-3 mb-3">
-                                        <img src="<?= htmlspecialchars($portfolio['pfp'] ?: 'images/profile.png') ?>" class="rounded-circle shadow-sm" style="width: 55px; height: 55px; object-fit: cover;" alt="Avatar">
-                                        <div>
-                                            <h5 class="fw-bold mb-0 text-body" style="font-size: 1.1rem;"><?= htmlspecialchars($portfolio['name']) ?></h5>
-                                            <span class="text-xs text-primary fw-medium" style="font-size: 0.8rem;">
-                                                <i class="bi bi-tag-fill me-1"></i><?= htmlspecialchars($portfolio['field']) ?>      <!--Add category-->
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="card-body p-0 mb-3">
-                                        <h6 class="fw-semibold text-body mb-2"><?= htmlspecialchars($portfolio['field']) ?></h6>
-                                        <div class="d-flex flex-wrap mt-2 text-secondary" style="font-size: 0.9rem;">
-                                            <?= htmlspecialchars($portfolio['tech']) ?>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer bg-transparent border-0 p-0 mt-auto pt-3 border-top d-flex align-items-center justify-content-between">
-                                        <div class="d-flex gap-3 text-secondary" style="font-size: 0.85rem;">
-                                            <span><i class="bi bi-eye me-1"></i><?= (int)$portfolio['views'] ?></span>          <!--Add views and likes tables-->
-                                            <span><i class="bi bi-heart me-1"></i><?= (int)$portfolio['likes'] ?></span>        <!--Add views and likes tables-->
-                                        </div>
-                                        <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['uid'] ?>'">
-                                            Xem Portfolio <i class="bi bi-arrow-right"></i>
-                                        </button>
+                <?php if (!empty($portfolios)): ?>
+                    <?php foreach ($portfolios as $portfolio): ?>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card card-portfolio h-100 p-3">
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <img src="<?= htmlspecialchars($portfolio['pfp'] ?: 'images/profile.png') ?>" class="rounded-circle shadow-sm" style="width: 55px; height: 55px; object-fit: cover;" alt="Avatar">
+                                    <div>
+                                        <h5 class="fw-bold mb-0 text-body" style="font-size: 1.1rem;"><?= htmlspecialchars($portfolio['name']) ?></h5>
+                                        <span class="text-xs text-primary fw-medium" style="font-size: 0.8rem;">
+                                            <i class="bi bi-tag-fill me-1"></i><?= htmlspecialchars($portfolio['field']) ?>
+                                        </span>
                                     </div>
                                 </div>
+                                <div class="card-body p-0 mb-3">
+                                    <h6 class="fw-semibold text-body mb-2"><?= htmlspecialchars($portfolio['field']) ?></h6>
+                                    
+                                    <!-- Khu vực hiển thị Kỹ năng dưới dạng Badge nhỏ gọn, tinh tế -->
+                                    <div class="d-flex flex-wrap gap-1 mt-2">
+                                        <?php 
+                                        if (!empty($portfolio['skills'])) {
+                                            // Tách chuỗi kỹ năng bằng dấu chấm phẩy hoặc dấu phẩy
+                                            $skillsArray = preg_split('/[;,]/', $portfolio['skills']);
+                                            foreach ($skillsArray as $skill) {
+                                                $trimmedSkill = trim($skill);
+                                                if ($trimmedSkill !== '') {
+                                                    echo '<span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill fw-normal px-2 py-1" style="font-size: 0.75rem;">' . htmlspecialchars($trimmedSkill) . '</span>';
+                                                }
+                                            }
+                                        } else {
+                                            echo '<span class="text-muted text-xs" style="font-size: 0.8rem;">Chưa cập nhật kỹ năng</span>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent border-0 p-0 mt-auto pt-3 border-top d-flex align-items-center justify-content-between">
+                                    <div class="d-flex gap-3 text-secondary" style="font-size: 0.85rem;">
+                                        <span><i class="bi bi-eye me-1"></i><?= (int)$portfolio['views'] ?></span>
+                                        <span><i class="bi bi-heart me-1"></i><?= (int)$portfolio['likes'] ?></span>
+                                    </div>
+                                    <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['uid'] ?>'">
+                                        Xem Portfolio <i class="bi bi-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="col-12 text-center text-muted py-5">
-                            <p class="mb-0">Hiện chưa có mẫu portfolio nào hiển thị.</p>
                         </div>
-                    <?php endif; ?>
-                </div>
-              
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="col-12 text-center text-muted py-5">
+                        <p class="mb-0">Hiện chưa có mẫu portfolio nào hiển thị.</p>
+                    </div>
+                <?php endif; ?>
             </div>
-           
-            <!--End of users card inforamtion-->
+            
+            <!-- End of users card information -->
 
             <!-- Load More Mock Action -->
             <div class="text-center mt-5">
@@ -396,7 +410,7 @@
         </div>
     </section>
 
-                 
+                     
         <!-- Platform Features -->
     <section class="py-5 bg-body border-top" id="features">
         <div class="container">
@@ -519,6 +533,6 @@
                 themeIcon.className = "bi bi-sun-fill fs-5";
             }
         }
-    </script>                   
+    </script>                    
     </body>
 </html>

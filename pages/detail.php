@@ -12,7 +12,7 @@ if ($userId <= 0) {
 }
 
 try {
-    // 3. Fetch basic profile info matching this specific ID
+    // 3. Fetch basic profile info matching this specific ID (Bổ sung trường skills)
     $userQuery = "
         SELECT 
             name, 
@@ -21,7 +21,8 @@ try {
             bio,
             email,
             website,
-            location
+            location,
+            userdetails.skills AS skills
         FROM profiles
         LEFT JOIN userdetails ON userdetails.uid = profiles.uid
         WHERE userdetails.uid = ?
@@ -116,73 +117,70 @@ $stmtCount->close();
     </style>
 </head>
 <body class="bg-body-tertiary">
-    <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color:black ;">        <!--Name on navbar-->
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center gap-2" href="../index.php">
+    <!-- Navbar (Thanh điều hướng cố định đã sửa responsive) -->
+    <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); border-color: black;">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="../index.php">
                 <span class="p-2 rounded-3 d-flex align-items-center justify-content-center text-white">
-                <i><image src="../images/logo.jpg" style="width:50px; height:50px;"></image></i>
+                    <img src="../images/logo.jpg" style="width: 50px; height: 50px; border-radius: 8px;" alt="Logo">
                 </span>
                 <span class="fs-4 fw-bold text-body">Portfolio<span class="text-primary">Hub</span></span>
+            </a>
                 
-                </a>
+            <!-- Nút Hamburger hiển thị trên mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- SỬA TẠI ĐÂY: Bổ sung lớp collapse để thu gọn giao diện trên thiết bị nhỏ -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Thêm flex-column trên mobile, flex-row trên PC và dịch qua phải bằng ms-auto -->
+                <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-3 ms-auto mt-3 mt-lg-0">
                     
-                <!--Hamburger button when window scale down-->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                    <!-- Light/Dark Mode Switcher -->
+                    <button class="btn btn-link text-body p-0 p-lg-2" id="themeToggleBtn" type="button" aria-label="Đổi chủ đề" title="Đổi giao diện Sáng/Tối">
+                        <i class="bi bi-sun-fill fs-5" id="themeIcon"></i>
+                    </button>
+                    
+                    <!-- Auth Actions -->
+                    <?php if (isset($_SESSION["userId"])): ?>
+                        <div class="dropdown" id="userDropdownBlock">
+                            <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="outline: none; box-shadow: none;">
+                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px; font-size: 0.95rem;" id="userAvatar">
+                                    <?php echo isset($_SESSION["profileName"]) ? substr($_SESSION["profileName"], 0, 2) : 'U'; ?>
+                                </div>
+                                <span class="fw-semibold small" id="userFullName"><?php echo isset($_SESSION["profileName"]) ? $_SESSION["profileName"] : ''; ?></span>
+                            </a>
 
-                <div class="d-flex align-items-center gap-3">       <!--Buttons on the right side of navbar-->
-                        <!-- Light/Dark Mode Switcher -->
-                        <button class="btn btn-link text-body p-2" id="themeToggleBtn" type="button" aria-label="Đổi chủ đề" title="Đổi giao diện Sáng/Tối">
-                            <i class="bi bi-sun-fill fs-5" id="themeIcon"></i>
-                        </button>
-                        <!-- Auth Actions -->
-                        <?php if (isset($_SESSION["userId"])):?>
-                            <div class="dropdown" id="userDropdownBlock">
-                                <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="outline: none; box-shadow: none;">
-                                    <!-- Avatar tròn viết tắt tên -->
-                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px; font-size: 0.95rem;" id="userAvatar">
-                                        <?php echo isset($_SESSION["profileName"]) ? substr($_SESSION["profileName"], 0, 2) : 'U'; ?>
-                                    </div>
-                                    <!-- Tên hiển thị (chỉ hiện trên màn hình máy tính) -->
-                                    <span class="fw-semibold small d-none d-md-inline" id="userFullName"><?php echo isset($_SESSION["profileName"]) ? $_SESSION["profileName"] : ''; ?></span>
-                                </a>
-
-                                <!-- Danh sách thả xuống Dropdown Menu -->
-                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border mt-2" aria-labelledby="profileDropdown">
-                                    <!-- Tên di động ẩn/hiện -->
-                                    <li class="px-3 py-2 border-bottom d-md-none">
-                                        <span class="d-block small fw-bold text-body" id="userFullNameMobile"><?php echo isset($_SESSION["profileName"]) ? $_SESSION["profileName"] : ''; ?></span>
-                                        <span class="d-block text-muted" style="font-size: 0.75rem;" id="userEmailMobile"><?php echo isset($_SESSION["profileEmail"]) ? $_SESSION["profileEmail"] : ''; ?></span>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="pages/detail.php?id=<?= $_SESSION['userId'] ?>">
-                                            <i class="bi bi-person-vcard text-primary fs-5"></i>
-                                            <span>Portfolio của tôi</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="#">
-                                            <i class="bi bi-gear text-secondary fs-5"></i>
-                                            <span>Cài đặt tài khoản</span>
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider my-1"></li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="actions/signout.php">
-                                            <i class="bi bi-box-arrow-right fs-5"></i>
-                                            <span class="fw-medium">Đăng xuất</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        <?php else: ?>
-                            <!-- Chỉ hiển thị cụm nút này khi CHƯA đăng nhập -->
-                            <button class="btn btn-outline-secondary px-4 rounded-pill" type="button" onclick="window.location.href='login.php'">Đăng nhập</button>
-                            <button class="btn btn-primary px-4 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" type="button" onclick="window.location.href='register.php'">Bắt đầu ngay</button>
-                        <?php endif; ?>
-                    </div>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border mt-2" aria-labelledby="profileDropdown">
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="pages/detail.php?id=<?= $_SESSION['userId'] ?>">
+                                        <i class="bi bi-person-vcard text-primary fs-5"></i>
+                                        <span>Portfolio của tôi</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="#">
+                                        <i class="bi bi-gear text-secondary fs-5"></i>
+                                        <span>Cài đặt tài khoản</span>
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="actions/signout.php">
+                                        <i class="bi bi-box-arrow-right fs-5"></i>
+                                        <span class="fw-medium">Đăng xuất</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    <?php else: ?>
+                        <!-- Thêm class w-100 w-lg-auto để các nút chiếm trọn chiều rộng khi thu nhỏ trên mobile -->
+                        <button class="btn btn-outline-secondary px-4 rounded-pill w-100 w-lg-auto" type="button" onclick="window.location.href='login.php'">Đăng nhập</button>
+                        <button class="btn btn-primary px-4 rounded-pill shadow-sm w-100 w-lg-auto" style="background: var(--primary-gradient); border: none;" type="button" onclick="window.location.href='register.php'">Bắt đầu ngay</button>
+                    <?php endif; ?>
+                    
+                </div>
             </div>
         </div>
     </nav>
@@ -248,9 +246,31 @@ $stmtCount->close();
 
                         <div class="mb-4">
                             <h6 class="fw-bold mb-3"><i class="bi bi-info-circle me-2 text-primary"></i>Thông tin cơ bản</h6>
-                            <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-envelope text-muted"></i><span class="text-muted"><?php echo $user['email']?></span></div>
-                            <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-geo-alt text-muted"></i><span class="text-muted"><?php echo $user['location']?></span></div>
-                            <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-globe text-muted"></i><span class="text-primary web"><?php echo $user['website']?></span></div>
+                            <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-envelope text-muted"></i><span class="text-muted"><?php echo htmlspecialchars($user['email'])?></span></div>
+                            <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-geo-alt text-muted"></i><span class="text-muted"><?php echo htmlspecialchars($user['location'])?></span></div>
+                            <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-globe text-muted"></i><span class="text-primary web"><?php echo htmlspecialchars($user['website'])?></span></div>
+                            
+                            <!-- Bổ sung hiển thị danh sách kỹ năng bên dưới website link -->
+                            <?php if (!empty($user['skills'])): ?>
+                                <div class="mt-4 pt-2 border-top">
+                                    <h6 class="fw-bold mb-2.5" style="font-size: 0.85rem;"><i class="bi bi-braces text-primary me-2"></i>Kỹ năng chuyên môn</h6>
+                                    <div class="d-flex flex-wrap gap-1 mt-2">
+                                        <?php 
+                                        $skillsArray = preg_split('/[;,]/', $user['skills']);
+                                        foreach ($skillsArray as $skill): 
+                                            $trimmedSkill = trim($skill);
+                                            if ($trimmedSkill !== ''): 
+                                        ?>
+                                            <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill fw-normal px-2 py-1" style="font-size: 0.75rem;">
+                                                <?php echo htmlspecialchars($trimmedSkill); ?>
+                                            </span>
+                                        <?php 
+                                            endif;
+                                        endforeach; 
+                                        ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -258,7 +278,7 @@ $stmtCount->close();
                 <div class="col-lg-8">
                     <div class="card card-custom p-4 bg-body mb-4">
                         <h4 class="fw-bold mb-3"><i class="bi bi-person text-primary me-2"></i>Giới thiệu bản thân</h4>
-                        <p class="text-muted leading-relaxed mb-0"><?php echo $user['bio']?></p>
+                        <p class="text-muted leading-relaxed mb-0"><?php echo htmlspecialchars($user['bio'])?></p>
                     </div>
 
                     <div class="card card-custom p-4 bg-body mb-4">
@@ -269,7 +289,7 @@ $stmtCount->close();
                                     <div class="col-md-6">
                                         <div class="border rounded-4 p-3 h-100 bg-body-tertiary">
                                             <h6 class="fw-bold mb-2">💡 <?php echo htmlspecialchars($project['project_name']); ?></h6>
-                                            <p class="text-muted small mb-3"><?php echo $project['description']; ?></p>
+                                            <p class="text-muted small mb-3"><?php echo htmlspecialchars($project['description']); ?></p>
                                             <div class="d-flex gap-1 flex-wrap">
                                                 <?php 
                                                 $techBadges = explode(',', $project['tech']);
