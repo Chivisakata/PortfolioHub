@@ -189,5 +189,41 @@
         }
         }, 3000);
     </script>
+    <script>
+        // --- alert time out  ---  
+        setTimeout(() => {
+        const alert = document.querySelector(".alert");
+        if (alert) {
+        bootstrap.Alert.getOrCreateInstance(alert).close();
+        }
+        }, 3000);
+
+        // --- Light/Dark Mode Toggle ---
+        const themeToggleBtn = document.getElementById("themeToggleBtn");
+        const themeIcon = document.getElementById("themeIcon");
+        const htmlElement = document.documentElement;
+
+        // Initialize Theme
+        const storedTheme = localStorage.getItem("theme") || "light";
+        htmlElement.setAttribute("data-bs-theme", storedTheme);
+        updateThemeIcon(storedTheme);
+
+        themeToggleBtn.addEventListener("click", () => {
+            const currentTheme = htmlElement.getAttribute("data-bs-theme");
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            htmlElement.setAttribute("data-bs-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            updateThemeIcon(newTheme);
+            showToast(`Đã chuyển sang chế độ ${newTheme === 'light' ? 'Sáng' : 'Tối'}!`);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === "dark") {
+                themeIcon.className = "bi bi-moon-fill fs-5";
+            } else {
+                themeIcon.className = "bi bi-sun-fill fs-5";
+            }
+        }
+    </script>   
 </body>
 </html>
