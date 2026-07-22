@@ -42,7 +42,10 @@
             $_SESSION["role"] = $user['role'];
             $_SESSION["profileName"] = $profile['name'];
             $_SESSION["profileEmail"] = $profile['email'];
+            $_SESSION['pfp'] = $profile['pfp'];
             $_SESSION["success"] = "Đăng nhập thành công!";
+
+
             // var_dump($_SESSION);
             header("Location: ../index.php");
             exit();
