@@ -229,7 +229,6 @@ $stmtCount->close();
                                         </button>
                                     </form>
                                 <?php endif; ?>
-                                <a href="#contactSection" class="btn btn-outline-secondary rounded-pill btn-sm px-3">Liên hệ</a>
                             </div>
                         </div>
 
