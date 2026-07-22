@@ -145,16 +145,16 @@ $stmtCount->close();
                     <!-- Auth Actions -->
                     <?php if (isset($_SESSION["userId"])): ?>
                         <div class="dropdown" id="userDropdownBlock">
-                            <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="outline: none; box-shadow: none;">
-                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px; font-size: 0.95rem;" id="userAvatar">
-                                    <?php echo isset($_SESSION["profileName"]) ? substr($_SESSION["profileName"], 0, 2) : 'U'; ?>
+                            <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle border-0 outline-none shadow-none" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="box-shadow: none !important; outline: none !important;">
+                                <!-- Avatar tròn bo góc hoàn hảo, dùng bg-transparent để không bị lộ viền xanh -->
+                                <div class="rounded-circle bg-transparent d-flex align-items-center justify-content-center overflow-hidden border" style="width: 40px; height: 40px; min-width: 40px;" id="userAvatar">
+                                    <img src="<?= htmlspecialchars(!empty($_SESSION['pfp']) ? $_SESSION['pfp'] : '../images/profile.png') ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover; display: block;" alt="Avatar">
                                 </div>
-                                <span class="fw-semibold small" id="userFullName"><?php echo isset($_SESSION["profileName"]) ? $_SESSION["profileName"] : ''; ?></span>
                             </a>
 
                             <ul class="dropdown-menu dropdown-menu-end shadow-lg border mt-2" aria-labelledby="profileDropdown">
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="pages/detail.php?id=<?= $_SESSION['userId'] ?>">
+                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="detail.php?id=<?= $_SESSION['userId'] ?>">
                                         <i class="bi bi-person-vcard text-primary fs-5"></i>
                                         <span>Portfolio của tôi</span>
                                     </a>
@@ -208,17 +208,9 @@ $stmtCount->close();
                 <div class="col-lg-4">
                     <div class="card card-custom p-4 bg-body sticky-top" style="top: 100px; z-index: 10;">
                         <div class="text-center">
-                            <?php if (!empty($user['pfp'])): ?>
-                                <img src="../images/<?php echo htmlspecialchars($user['pfp']); ?>" class="rounded-circle avatar-overlap object-fit-cover" style="width: 140px; height: 140px;" alt="Avatar">
-                            <?php else: ?>
-                                <div class="rounded-circle avatar-overlap bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center" style="width: 140px; height: 140px; font-weight: 800; font-size: 3rem;">
-                                    <?php echo htmlspecialchars($initials); ?>
-                                </div>
-                            <?php endif; ?>
-
+                                <img src="<?= htmlspecialchars($_SESSION['pfp'] ?? '../images/profile.png') ?>" class="rounded-circle avatar-overlap object-fit-cover" style="width: 140px; height: 140px;" alt="Avatar">
                             <h3 class="fw-bold mt-3 mb-1"><?php echo htmlspecialchars($user['name']); ?></h3>
-                            <p class="text-primary fw-semibold mb-3"><?php echo htmlspecialchars($user['field']); ?></p>
-                            
+                            <p class="text-primary fw-semibold mb-3"><?php echo htmlspecialchars($user['field']); ?></p>        
                             <!-- CỤM NÚT LIKE ĐÃ TỐI ƯU HÓA SESSION -->
                             <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
 

@@ -84,15 +84,21 @@
 
                     <form id="portfolioForm">
                         
-                        <!-- Section 1: Giao diện & Chủ đề -->
-                        <div class="form-section-title"><i class="bi bi-palette me-2"></i>Chủ Đề & Giao Diện</div>
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold">Chọn màu chủ đạo ảnh bìa (Cover Banner)</label>
-                            <div class="d-flex gap-2" id="themePicker">
-                                <div class="theme-dot gradient-bg-1 active" data-theme="gradient-bg-1" title="Tím Indigo"></div>
-                                <div class="theme-dot gradient-bg-2" data-theme="gradient-bg-2" title="Xanh Cyan"></div>
-                                <div class="theme-dot gradient-bg-3" data-theme="gradient-bg-3" title="Xám Đen Tối Giản"></div>
-                                <div class="theme-dot gradient-bg-4" data-theme="gradient-bg-4" title="Cam Đỏ Hoàng Hôn"></div>
+                       <!-- Section 1: Cấu hình Avatar cá nhân -->
+                        <div class="form-section-title"><i class="bi bi-person-bounding-box me-2"></i>Ảnh Đại Diện (Avatar)</div>
+                        <div class="p-3 border rounded-3 bg-light-subtle mb-3">
+                            <div class="row g-3 align-items-center">
+                                <!-- Khung hiển thị Avatar xem trước -->
+                                <div class="col-auto text-center">
+                                    <div id="avatarPreview" class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 75px; height: 75px; font-size: 1.8rem; object-fit: cover; overflow: hidden;">
+                                       <img id="avatarImageTag"src="<?= htmlspecialchars($_SESSION['pfp'] ?? '../images/profile.png') ?>"class="rounded-circle shadow-sm w-100 h-100"style="object-fit: cover;" alt="Avatar">
+                                    </div>
+                                </div>
+                                <!-- Các tùy chọn thiết lập -->
+                                <div class="col">
+                                    <label class="form-label small fw-semibold mb-1">Tải ảnh đại diện lên</label>
+                                    <input type="file" class="form-control form-control-sm rounded-3 mb-2" id="inputAvatarFile" accept="image/*" onchange="handleAvatarUpload(event)">
+                                </div>
                             </div>
                         </div>
 

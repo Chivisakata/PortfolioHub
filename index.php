@@ -165,6 +165,8 @@
                 FROM profiles p
                 LEFT JOIN userdetails ud ON p.uid = ud.uid 
                 LEFT JOIN projects pj ON p.uid = pj.uid
+                WHERE p.name IS NOT NULL
+                AND TRIM(p.name) <> ''
                 GROUP BY p.uid, p.name, p.pfp, ud.field, ud.skills
                 ORDER BY p.id ASC 
                 LIMIT 15
@@ -227,14 +229,17 @@
                         <!-- Auth Actions -->
                         <?php if (isset($_SESSION["userId"])):?>
                             <div class="dropdown" id="userDropdownBlock">
-                                <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="outline: none; box-shadow: none;">
-                                    <!-- Avatar tròn viết tắt tên -->
-                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px; font-size: 0.95rem;" id="userAvatar">
-                                        <?php echo isset($_SESSION["profileName"]) ? substr($_SESSION["profileName"], 0, 2) : 'U'; ?>
-                                    </div>
-                                    <!-- Tên hiển thị (chỉ hiện trên màn hình máy tính) -->
-                                    <span class="fw-semibold small d-none d-md-inline" id="userFullName"><?php echo isset($_SESSION["profileName"]) ? $_SESSION["profileName"] : ''; ?></span>
-                                </a>
+                            <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle border-0 outline-none shadow-none" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="box-shadow: none !important; outline: none !important;">
+                                <!-- Avatar tròn bo góc hoàn hảo, dùng bg-transparent để không bị lộ viền xanh -->
+                                <div class="rounded-circle bg-transparent d-flex align-items-center justify-content-center overflow-hidden border" style="width: 40px; height: 40px; min-width: 40px;" id="userAvatar">
+                                    <img src="<?= htmlspecialchars(!empty($_SESSION['pfp']) ? $_SESSION['pfp'] : 'images/profile.png') ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover; display: block;" alt="Avatar">
+                                </div>
+                                
+                                <!-- Tên hiển thị -->
+                                <span class="fw-semibold small d-none d-md-inline" id="userFullName">
+                                    <?= htmlspecialchars($_SESSION["profileName"] ?? '') ?>
+                                </span>
+                            </a>
 
                                 <!-- Danh sách thả xuống Dropdown Menu -->
                                 <ul class="dropdown-menu dropdown-menu-end shadow-lg border mt-2" aria-labelledby="profileDropdown">
@@ -489,7 +494,7 @@
         <div class="container py-4 text-center">
             <h2 class="fw-bold mb-3 display-6">Sẵn Sàng Xây Dựng Thương Hiệu Cá Nhân?</h2>
             <p class="lead mb-4">Tham gia cùng hơn 100,000+ lập trình viên và nhà thiết kế đang tỏa sáng mỗi ngày.</p>
-                    <button class="btn btn-light text-primary fw-bold px-5 py-3 rounded-pill shadow"  onclick="window.location.href='./pages/createprofile.php'" >Tạo Portfolio của Bạn Ngay</button>
+                    <button class="btn btn-light text-primary fw-bold px-5 py-3 rounded-pill shadow"  onclick="window.location.href='<?php echo isset($_SESSION['userId']) ? "pages/createprofile.php" : "pages/login.php"; ?>'">Tạo Portfolio của Bạn Ngay</button>
         </div>
     </section>
 
