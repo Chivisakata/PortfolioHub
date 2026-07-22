@@ -92,25 +92,6 @@
                 <p class="text-muted small">Khám phá và xây dựng ước mơ cùng <span class="gradient-text fw-bold">PortfolioHub</span></p>
             </div>
 
-            <!-- Social Login Buttons -->
-            <div class="d-flex flex-column gap-2 mb-4">
-                <button class="btn btn-social btn-sm py-2 d-flex align-items-center justify-content-center gap-2 rounded-pill" onclick="simulateSocialLogin('Google')">
-                    <i class="bi bi-google text-danger"></i>
-                    <span class="small fw-semibold">Tiếp tục với Google</span>
-                </button>
-                <button class="btn btn-social btn-sm py-2 d-flex align-items-center justify-content-center gap-2 rounded-pill" onclick="simulateSocialLogin('GitHub')">
-                    <i class="bi bi-github"></i>
-                    <span class="small fw-semibold">Tiếp tục với GitHub</span>
-                </button>
-            </div>
-
-            <!-- Separator -->
-            <div class="d-flex align-items-center my-3">
-                <hr class="flex-grow-1 text-muted">
-                <span class="px-2 text-muted small">hoặc dùng Email</span>
-                <hr class="flex-grow-1 text-muted">
-            </div>
-
             <form id="loginForm" action="../actions/login.php" method="POST">
                 <div class="mb-3">
                     <label for="loginEmail" class="form-label small fw-semibold">Địa chỉ Email</label>
@@ -131,13 +112,6 @@
                         <button class="btn btn-outline-secondary border-start-0 bg-body-tertiary text-muted" type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility()">
                             <i class="bi bi-eye-fill" id="passwordIcon"></i>
                         </button>
-                    </div>
-                </div>
-
-                <div class="mb-4 d-flex align-items-center justify-content-between">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="rememberMe">
-                        <label class="form-check-label small" for="rememberMe">Ghi nhớ đăng nhập</label>
                     </div>
                 </div>
 
