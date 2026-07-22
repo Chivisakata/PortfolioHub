@@ -17,6 +17,7 @@ $email    = $data["email"];
 $location = $data["location"];
 $website  = $data["website"];
 $bio      = $data["bio"];
+$avatar   = $data["avatar"];
 
 $sql = "UPDATE profiles
         SET
@@ -103,3 +104,4 @@ foreach($data["projects"] as $project){
 echo json_encode([
     "success" => true
 ]);
+

@@ -232,13 +232,14 @@
                             <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle border-0 outline-none shadow-none" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="box-shadow: none !important; outline: none !important;">
                                 <!-- Avatar tròn bo góc hoàn hảo, dùng bg-transparent để không bị lộ viền xanh -->
                                 <div class="rounded-circle bg-transparent d-flex align-items-center justify-content-center overflow-hidden border" style="width: 40px; height: 40px; min-width: 40px;" id="userAvatar">
-                                    <img src="<?= htmlspecialchars(!empty($_SESSION['pfp']) ? $_SESSION['pfp'] : 'images/profile.png') ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover; display: block;" alt="Avatar">
+                                    <img src="<?= htmlspecialchars(!empty($_SESSION['pfp']) ? 'images/pfps/' . $_SESSION['pfp'] : 'images/profile.png') ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover; display: block;" alt="Avatar">
                                 </div>
                                 
                                 <!-- Tên hiển thị -->
                                 <span class="fw-semibold small d-none d-md-inline" id="userFullName">
                                     <?= htmlspecialchars($_SESSION["profileName"] ?? '') ?>
                                 </span>
+
                             </a>
 
                                 <!-- Danh sách thả xuống Dropdown Menu -->
@@ -355,7 +356,7 @@
                         <div class="col-md-6 col-lg-4">
                             <div class="card card-portfolio h-100 p-3">
                                 <div class="d-flex align-items-center gap-3 mb-3">
-                                    <img src="<?= htmlspecialchars($portfolio['pfp'] ?: 'images/profile.png') ?>" class="rounded-circle shadow-sm" style="width: 55px; height: 55px; object-fit: cover;" alt="Avatar">
+                                   <img src="<?= !empty($portfolio['pfp'])? htmlspecialchars('images/pfps/' . $portfolio['pfp']): 'images/profile.png' ?>"class="rounded-circle shadow-sm"style="width: 55px; height: 55px; object-fit: cover;"alt="Avatar">
                                     <div>
                                         <h5 class="fw-bold mb-0 text-body" style="font-size: 1.1rem;"><?= htmlspecialchars($portfolio['name']) ?></h5>
                                         <span class="text-xs text-primary fw-medium" style="font-size: 0.8rem;">

@@ -24,7 +24,7 @@
             justify-content: center;
             transition: background-color 0.3s, color 0.3s;
         }
-        .gradient-text {
+          .gradient-text {
             background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -91,7 +91,7 @@
                 <h3 class="fw-bold mb-1">Mừng bạn quay lại!</h3>
                 <p class="text-muted small">Khám phá và xây dựng ước mơ cùng <span class="gradient-text fw-bold">PortfolioHub</span></p>
             </div>
-
+            
             <form id="loginForm" action="../actions/login.php" method="POST">
                 <div class="mb-3">
                     <label for="loginEmail" class="form-label small fw-semibold">Địa chỉ Email</label>

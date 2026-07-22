@@ -83,7 +83,7 @@
                     <p class="text-muted small mb-3">Điền thông tin của bạn vào biểu mẫu bên dưới và nhấn lưu.</p>
 
                     <form id="portfolioForm">
-                        
+     
                        <!-- Section 1: Cấu hình Avatar cá nhân -->
                         <div class="form-section-title"><i class="bi bi-person-bounding-box me-2"></i>Ảnh Đại Diện (Avatar)</div>
                         <div class="p-3 border rounded-3 bg-light-subtle mb-3">
@@ -91,7 +91,7 @@
                                 <!-- Khung hiển thị Avatar xem trước -->
                                 <div class="col-auto text-center">
                                     <div id="avatarPreview" class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 75px; height: 75px; font-size: 1.8rem; object-fit: cover; overflow: hidden;">
-                                       <img id="avatarImageTag"src="<?= htmlspecialchars($_SESSION['pfp'] ?? '../images/profile.png') ?>"class="rounded-circle shadow-sm w-100 h-100"style="object-fit: cover;" alt="Avatar">
+                                       <img id="avatarImageTag" src="<?= htmlspecialchars(!empty($_SESSION['pfp']) ? '../images/pfps/' . $_SESSION['pfp'] : '../images/profile.png') ?>"class="rounded-circle shadow-sm w-100 h-100"style="object-fit: cover;"alt="Avatar">
                                     </div>
                                 </div>
                                 <!-- Các tùy chọn thiết lập -->
@@ -433,6 +433,28 @@
         // --- Save to LocalStorage ---
        async function savePortfolio() {
 
+        const avatar = document.getElementById("inputAvatarFile").files[0];
+
+        if (avatar) {
+
+            const formData = new FormData();
+            formData.append("avatar", avatar);
+
+            const uploadResponse = await fetch("../actions/uploadPfp.php", {
+                method: "POST",
+                body: formData
+            });
+
+            const uploadResult = await uploadResponse.json();
+
+            if (!uploadResult.success) {
+                showToast(uploadResult.message, "danger");
+                return;
+            }
+
+        }
+
+
             const data = {
 
                 name: document.getElementById("inputName").value,
@@ -440,11 +462,7 @@
                 email: document.getElementById("inputEmail").value,
                 location: document.getElementById("inputLocation").value,
                 website: document.getElementById("inputWebsite").value,
-                bio: document.getElementById("inputBio").value,
-
-                skills,
-                experiences,
-                projects
+                bio: document.getElementById("inputBio").value, skills, experiences, projects
             };
 
             const response = await fetch("../actions/savePortfolio.php", {

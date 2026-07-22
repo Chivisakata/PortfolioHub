@@ -31,12 +31,12 @@
     if (mysqli_num_rows($result) > 0) {
         $user = mysqli_fetch_assoc($result);
         if(password_verify($password, $user['hashedPsswd'])){
-            $sql = "SELECT name, email FROM profiles WHERE uid = ?";
+            $sql = "SELECT name, email, pfp FROM profiles WHERE uid = ?";
             $stmt = mysqli_prepare($conn, $sql);
             mysqli_stmt_bind_param($stmt, "i", $user['id']);
             mysqli_stmt_execute($stmt);
-            $profileResult = mysqli_stmt_get_result($stmt);
-            $profile = mysqli_fetch_assoc($profileResult);
+            $profile = mysqli_stmt_get_result($stmt);
+            $profile = mysqli_fetch_assoc($profile);
             $_SESSION["userId"] = $user['id'];
             $_SESSION["email"] = $user['email'];
             $_SESSION["role"] = $user['role'];
