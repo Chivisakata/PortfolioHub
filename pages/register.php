@@ -110,24 +110,6 @@
                 <p class="text-muted small">Bắt đầu thiết kế portfolio cá nhân cùng <span class="gradient-text fw-bold">PortfoliHub</span></p>
             </div>
 
-            <!-- Social Registration Buttons -->
-            <div class="d-flex flex-column gap-2 mb-4">
-                <button class="btn btn-social btn-sm py-2 d-flex align-items-center justify-content-center gap-2 rounded-pill" onclick="simulateSocialRegister('Google')">
-                    <i class="bi bi-google text-danger"></i>
-                    <span class="small fw-semibold">Đăng ký bằng Google</span>
-                </button>
-                <button class="btn btn-social btn-sm py-2 d-flex align-items-center justify-content-center gap-2 rounded-pill" onclick="simulateSocialRegister('GitHub')">
-                    <i class="bi bi-github"></i>
-                    <span class="small fw-semibold">Đăng ký bằng GitHub</span>
-                </button>
-            </div>
-
-            <!-- Separator -->
-            <div class="d-flex align-items-center my-3">
-                <hr class="flex-grow-1 text-muted">
-                <span class="px-2 text-muted small">hoặc dùng Email</span>
-                <hr class="flex-grow-1 text-muted">
-            </div>
 
             <!-- Registration Form -->
             <form id="registerForm" action="../actions/register.php" method="POST">
