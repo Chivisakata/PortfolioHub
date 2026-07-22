@@ -417,46 +417,6 @@
     </section>
 
                      
-        <!-- Platform Features -->
-    <section class="py-5 bg-body border-top" id="features">
-        <div class="container">
-            <div class="text-center max-w-2xl mx-auto mb-5">
-                <h2 class="fw-bold text-body">Tính Năng Giúp Bạn Khác Biệt</h2>
-                <p class="text-muted">Trang bị các công cụ chuyên nghiệp để hỗ trợ hồ sơ của bạn đạt tỉ lệ tuyển dụng cao nhất</p>
-            </div>
-
-            <div class="row g-4 mt-2">
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 bg-transparent p-4">
-                        <div class="feature-icon-box">
-                            <i class="bi bi-layout-text-window-reverse"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">Mẫu Thiết Kế Sẵn Có</h4>
-                        <p class="text-muted">Bộ sưu tập mẫu thiết kế đa dạng, hiện đại và tối ưu hóa tối đa cho các ngành nghề sáng tạo.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 bg-transparent p-4">
-                        <div class="feature-icon-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); color: #3b82f6;">
-                            <i class="bi bi-globe"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">Tên Miền Tùy Chỉnh</h4>
-                        <p class="text-muted">Kết nối portfolio với tên miền cá nhân của bạn để nâng tầm thương hiệu riêng biệt chuyên nghiệp.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 bg-transparent p-4">
-                        <div class="feature-icon-box" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%); color: #10b981;">
-                            <i class="bi bi-bar-chart-line-fill"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">Phân Tích Đo Lường</h4>
-                        <p class="text-muted">Theo dõi lưu lượng khách truy cập, xem vùng hoạt động và nắm bắt các số liệu từ nhà tuyển dụng.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- How it Works Step-by-Step -->
     <section class="py-5" id="how-it-works">
         <div class="container">
@@ -496,6 +456,51 @@
             <h2 class="fw-bold mb-3 display-6">Sẵn Sàng Xây Dựng Thương Hiệu Cá Nhân?</h2>
             <p class="lead mb-4">Tham gia cùng hơn 100,000+ lập trình viên và nhà thiết kế đang tỏa sáng mỗi ngày.</p>
                     <button class="btn btn-light text-primary fw-bold px-5 py-3 rounded-pill shadow"  onclick="window.location.href='<?php echo isset($_SESSION['userId']) ? "pages/createprofile.php" : "pages/login.php"; ?>'">Tạo Portfolio của Bạn Ngay</button>
+        </div>
+    </section>
+
+    <!-- ================= KHU VỰC CHỨNG CHỈ XML DOM ================= -->
+    <section class="py-5 bg-body-tertiary border-top border-bottom" id="certificates-section">
+        <div class="container text-center">
+            <div class="mb-4">
+                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 mb-2">
+                    <i class="bi bi-patch-check-fill me-1"></i> Dữ liệu chuẩn quốc tế
+                </span>
+                <h3 class="fw-bold text-body mb-2">Chứng Chỉ Công Nghệ Hàng Đầu</h3>
+                <p class="text-muted small mx-auto" style="max-width: 600px;">
+                    Tra cứu các chứng chỉ chuyên môn được săn đón nhất trong ngành IT
+            </div>
+
+            <!-- Nút bấm Bật / Tắt danh sách -->
+            <button class="btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold shadow-sm" id="btnToggleCert" onclick="toggleCertificates()">
+                </i> Xem các chứng chỉ phổ biến
+            </button>
+
+            <!-- Khung chứa bảng dữ liệu XML (Mặc định ẩn d-none) -->
+            <div class="mt-4 d-none" id="certContainer">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-start">
+                    <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="fw-bold mb-0"></i> Danh sách chứng chỉ</h6>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light small text-uppercase">
+                                <tr>
+                                    <th style="width: 80px;" class="text-center">Mã ID</th>
+                                    <th>Tên chứng chỉ</th>
+                                    <th>Tổ chức cấp</th>
+                                    <th>Lĩnh vực</th>
+                                    <th>Cấp độ</th>
+                                    <th>Mô tả chi tiết</th>
+                                </tr>
+                            </thead>
+                            <tbody id="certTableBody" class="small">
+                                <!-- Dữ liệu XML sẽ được duyệt Node và chèn vào đây -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -539,6 +544,95 @@
                 themeIcon.className = "bi bi-sun-fill fs-5";
             }
         }
+
+        // --- Toggle Certificates Section ---
+        let isXmlLoaded = false;
+
+    function toggleCertificates() {
+        const container = document.getElementById("certContainer");
+        const btn = document.getElementById("btnToggleCert");
+
+        // Nếu đang ẩn -> Hiện lên
+        if (container.classList.contains("d-none")) {
+            // Nếu chưa tải dữ liệu XML thì gọi AJAX tải
+            if (!isXmlLoaded) {
+                loadCertificatesXML();
+            }
+            container.classList.remove("d-none");
+            btn.innerHTML = `<i class="bi bi-eye-slash me-1"></i> Ẩn danh sách chứng chỉ`;
+            btn.className = "btn btn-outline-danger rounded-pill px-4 py-2 fw-semibold shadow-sm";
+        } 
+        // Nếu đang hiện -> Ẩn đi
+        else {
+            container.classList.add("d-none");
+            btn.innerHTML = `<i class="bi bi-award me-1"></i> Xem các chứng chỉ phổ biến`;
+            btn.className = "btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold shadow-sm";
+        }
+    }
+
+    function loadCertificatesXML() {
+        // 1. Khởi tạo đối tượng XMLHttpRequest
+        const xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                const xmlDoc = this.responseXML;
+                const tbody = document.getElementById("certTableBody");
+                tbody.innerHTML = "";
+
+                // Lấy danh sách các thẻ <cert>
+                const certNodes = xmlDoc.getElementsByTagName("cert");
+    
+
+                // 2. Vận dụng các thuộc tính Node (firstChild, nextSibling) để duyệt XML
+                for (let i = 0; i < certNodes.length; i++) {
+                    const cert = certNodes[i];
+                    const certId = cert.getAttribute("id");
+
+                    // Bắt đầu từ node con đầu tiên của <cert> bằng firstChild
+                    let childNode = cert.firstChild;
+
+                    let certName = "", org = "", field = "", level = "", desc = "";
+
+                    // Duyệt qua tất cả các sibling node con bằng nextSibling
+                    while (childNode) {
+                        // Chỉ xử lý các Element node (nodeType === 1) để bỏ qua ký tự xuống dòng / khoảng trắng
+                        if (childNode.nodeType === 1) {
+                            const tagName = childNode.nodeName;
+                            const textContent = childNode.textContent.trim();
+
+                            if (tagName === "name") certName = textContent;
+                            else if (tagName === "organization") org = textContent;
+                            else if (tagName === "field") field = textContent;
+                            else if (tagName === "level") level = textContent;
+                            else if (tagName === "description") desc = textContent;
+                        }
+                        // Nhảy sang node kế tiếp bằng nextSibling
+                        childNode = childNode.nextSibling;
+                    }
+
+                    // Render dữ liệu vào dòng của bảng
+                    const row = `
+                        <tr>
+                            <td class="text-center fw-bold text-secondary">${certId}</td>
+                            <td class="fw-bold text-primary">${certName}</td>
+                            <td><span class="badge bg-secondary-subtle text-secondary">${org}</span></td>
+                            <td><i class="bi bi-tag me-1"></i>${field}</td>
+                            <td><span class="badge bg-info-subtle text-info-emphasis">${level}</span></td>
+                            <td class="text-muted" style="max-width: 300px;">${desc}</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                }
+
+                isXmlLoaded = true; // Đánh dấu đã nạp thành công
+            }
+        };
+
+        // Mở kết nối và gửi yêu cầu tới file certificates.xml
+        xhr.open("GET", "XML/certificates.xml", true);
+        xhr.send();
+    }
     </script>                    
     </body>
 </html>

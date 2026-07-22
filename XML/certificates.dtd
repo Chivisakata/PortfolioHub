@@ -1,0 +1,12 @@
+
+<!ELEMENT certificates (cert+)>
+
+<!ELEMENT cert (name, organization, field, level, description)>
+
+<!ATTLIST cert id ID #REQUIRED>
+
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT organization (#PCDATA)>
+<!ELEMENT field (#PCDATA)>
+<!ELEMENT level (#PCDATA)>
+<!ELEMENT description (#PCDATA)>

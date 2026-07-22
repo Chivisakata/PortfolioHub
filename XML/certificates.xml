@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE certificates SYSTEM "certificates.dtd">
+<certificates>
+    <cert id="GC01">
+        <name>AWS Certified Solutions Architect</name>
+        <organization>Amazon Web Services</organization>
+        <field>Cloud Computing</field>
+        <level>Associate / Professional</level>
+        <description>Chứng chỉ điện toán đám mây phổ biến nhất thế giới, đánh giá khả năng thiết kế hệ thống trên AWS.</description>
+    </cert>
+    <cert id="GC02">
+        <name>PMP (Project Management Professional)</name>
+        <organization>PMI</organization>
+        <field>Quản lý dự án</field>
+        <level>Expert</level>
+        <description>Tiêu chuẩn vàng quốc tế dành cho các nhà quản lý dự án chuyên nghiệp trong mọi lĩnh vực.</description>
+    </cert>
+    <cert id="GC03">
+        <name>CKA (Certified Kubernetes Administrator)</name>
+        <organization>Linux Foundation / CNCF</organization>
+        <field>DevOps &amp; Container</field>
+        <level>Intermediate</level>
+        <description>Chứng chỉ thực hành hàng đầu về quản trị và triển khai cụm Kubernetes.</description>
+    </cert>
+    <cert id="GC04">
+        <name>Google Professional Cloud Architect</name>
+        <organization>Google Cloud</organization>
+        <field>Cloud Computing</field>
+        <level>Professional</level>
+        <description>Xếp top đầu về mức lương trong ngành IT, chứng nhận năng lực kiến trúc hạ tầng trên GCP.</description>
+    </cert>
+    <cert id="GC05">
+        <name>CISSP (Certified Information Systems Security)</name>
+        <organization>(ISC)²</organization>
+        <field>Bảo mật &amp; An ninh mạng</field>
+        <level>Advanced</level>
+        <description>Chứng chỉ uy tín bậc nhất thế giới dành cho các chuyên gia và lãnh đạo an toàn thông tin.</description>
+    </cert>
+</certificates>
