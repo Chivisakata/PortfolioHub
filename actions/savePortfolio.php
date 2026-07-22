@@ -17,7 +17,6 @@ $email    = $data["email"];
 $location = $data["location"];
 $website  = $data["website"];
 $bio      = $data["bio"];
-$avatar   = $data["avatar"];
 
 $sql = "UPDATE profiles
         SET

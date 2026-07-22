@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
 <head>
@@ -91,13 +94,13 @@
                                 <!-- Khung hiển thị Avatar xem trước -->
                                 <div class="col-auto text-center">
                                     <div id="avatarPreview" class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 75px; height: 75px; font-size: 1.8rem; object-fit: cover; overflow: hidden;">
-                                       <img id="avatarImageTag" src="<?= htmlspecialchars(!empty($_SESSION['pfp']) ? '../images/pfps/' . $_SESSION['pfp'] : '../images/profile.png') ?>"class="rounded-circle shadow-sm w-100 h-100"style="object-fit: cover;"alt="Avatar">
+                                       <img id="avatarImageTag" src="<?= !empty($_SESSION['pfp'])? htmlspecialchars('../images/pfps/' . $_SESSION['pfp']): '../images/profile.png' ?>"class="rounded-circle shadow-sm w-100 h-100"style="object-fit: cover;"alt="Avatar">
                                     </div>
                                 </div>
                                 <!-- Các tùy chọn thiết lập -->
                                 <div class="col">
                                     <label class="form-label small fw-semibold mb-1">Tải ảnh đại diện lên</label>
-                                    <input type="file" class="form-control form-control-sm rounded-3 mb-2" id="inputAvatarFile" accept="image/*" onchange="handleAvatarUpload(event)">
+                                    <input type="file" class="form-control form-control-sm rounded-3 mb-2" id="inputAvatarFile" accept="image/*">
                                 </div>
                             </div>
                         </div>
@@ -478,10 +481,12 @@
             });
 
             const result = await response.json();
+            console.log(result);
 
             if(result.success){
 
                 showToast("Đã lưu thành công!", "success");
+                location.reload();
 
             }else{
 

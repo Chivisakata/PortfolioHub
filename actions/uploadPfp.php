@@ -24,12 +24,11 @@ $fileName = "avatar_" . $id . "_" . time() . "." . $ext;
 
 move_uploaded_file($file["tmp_name"], "../images/pfps/" . $fileName);
 
-$sql = "UPDATE profiles SET pfp='$path' WHERE uid=$id";
+$sql = "UPDATE profiles SET pfp='$fileName' WHERE uid=$id";
 $conn->query($sql);
 
-$_SESSION["pfp"] = $path;
+$_SESSION["pfp"] = $fileName;
 
 echo json_encode([
     "success" => true,
-    "path" => "../" . $path
 ]);
