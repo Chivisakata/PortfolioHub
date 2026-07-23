@@ -1,5 +1,6 @@
 <?php
     session_start(); 
+
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -160,16 +161,15 @@
                     ud.field AS field,
                     ud.skills AS skills,
                     MAX(pj.tech) AS tech,
-                    1250 AS views,  
-                    340 AS likes    
+                    (select count(*) from likes where uid = p.uid) as likes
                 FROM profiles p
                 LEFT JOIN userdetails ud ON p.uid = ud.uid 
                 LEFT JOIN projects pj ON p.uid = pj.uid
                 WHERE p.name IS NOT NULL
                 AND TRIM(p.name) <> ''
                 GROUP BY p.uid, p.name, p.pfp, ud.field, ud.skills
-                ORDER BY p.id ASC 
-                LIMIT 15
+                ORDER BY likes DESC, p.id ASC
+                LIMIT 20
             ";
 
             // Run query with MySQLi
@@ -387,7 +387,6 @@
                                 </div>
                                 <div class="card-footer bg-transparent border-0 p-0 mt-auto pt-3 border-top d-flex align-items-center justify-content-between">
                                     <div class="d-flex gap-3 text-secondary" style="font-size: 0.85rem;">
-                                        <span><i class="bi bi-eye me-1"></i><?= (int)$portfolio['views'] ?></span>
                                         <span><i class="bi bi-heart me-1"></i><?= (int)$portfolio['likes'] ?></span>
                                     </div>
                                     <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['uid'] ?>'">
@@ -410,7 +409,7 @@
             <div class="text-center mt-5">
                 <button class="btn btn-outline-primary px-5 py-3 rounded-pill fw-semibold" id="btnLoadMore" onclick="loadMorePortfolios()">
                     <span class="spinner-border spinner-border-sm d-none me-2" id="loadMoreSpinner" role="status"></span>
-                    Xem thêm các thiết kế độc đáo khác
+                    Xem thêm
                 </button>
             </div>
         </div>
@@ -633,6 +632,18 @@
         xhr.open("GET", "XML/certificates.xml", true);
         xhr.send();
     }
-    </script>                    
+    </script>  
+    <script>
+        window.addEventListener('pageshow', function (event) {
+            // Kiểm tra nếu trang được tải ra từ bộ nhớ tạm (Cache/BFCache)
+            var historyTraversal = event.persisted || 
+                (typeof window.performance != 'undefined' && window.performance.navigation.type === 2);
+            
+            if (historyTraversal) {
+                // Tải lại trang để lấy số lượt thích mới nhất từ database
+                window.location.reload();
+            }
+        });
+        </script>                  
     </body>
 </html>

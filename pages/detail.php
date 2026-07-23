@@ -209,6 +209,7 @@ $stmtCount->close();
                     <div class="card card-custom p-4 bg-body sticky-top" style="top: 100px; z-index: 10;">
                         <div class="text-center">
                                <img src="<?= !empty($user['pfp'])? htmlspecialchars('../images/pfps/' . $user['pfp']): '../images/profile.png' ?>"class="rounded-circle avatar-overlap object-fit-cover"style="width: 140px; height: 140px;"alt="Avatar">
+                            <h3 class="fw-bold mt-3 mb-1"><?php echo htmlspecialchars($user['name']); ?></h3>
                             <p class="text-primary fw-semibold mb-3"><?php echo htmlspecialchars($user['field']); ?></p>        
                             <!-- CỤM NÚT LIKE ĐÃ TỐI ƯU HÓA SESSION -->
                             <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
