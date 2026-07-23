@@ -350,13 +350,19 @@
             </div>
 
             <!-- Portfolio Grid -->
-            <div class="row g-4" id="portfolioGrid">
+          <div class="row g-4" id="portfolioGrid">
                 <?php if (!empty($portfolios)): ?>
-                    <?php foreach ($portfolios as $portfolio): ?>
-                        <div class="col-md-6 col-lg-4">
+                    <?php 
+                    $index = 0;
+                    foreach ($portfolios as $portfolio): 
+                        // Gán class 'extra-profile' cố định và 'd-none' để ẩn ban đầu
+                        $extraClass = ($index >= 6) ? 'extra-profile d-none' : '';
+                        $index++;
+                    ?>
+                        <div class="col-md-6 col-lg-4 <?= $extraClass ?>">
                             <div class="card card-portfolio h-100 p-3">
                                 <div class="d-flex align-items-center gap-3 mb-3">
-                                   <img src="<?= !empty($portfolio['pfp'])? htmlspecialchars('images/pfps/' . $portfolio['pfp']): 'images/profile.png' ?>"class="rounded-circle shadow-sm"style="width: 55px; height: 55px; object-fit: cover;"alt="Avatar">
+                                <img src="<?= !empty($portfolio['pfp'])? htmlspecialchars('images/pfps/' . $portfolio['pfp']): 'images/profile.png' ?>" class="rounded-circle shadow-sm" style="width: 55px; height: 55px; object-fit: cover;" alt="Avatar">
                                     <div>
                                         <h5 class="fw-bold mb-0 text-body" style="font-size: 1.1rem;"><?= htmlspecialchars($portfolio['name']) ?></h5>
                                         <span class="text-xs text-primary fw-medium" style="font-size: 0.8rem;">
@@ -402,16 +408,24 @@
                     </div>
                 <?php endif; ?>
             </div>
-            
+       
             <!-- End of users card information -->
 
             <!-- Load More Mock Action -->
-            <div class="text-center mt-5">
-                <button class="btn btn-outline-primary px-5 py-3 rounded-pill fw-semibold" id="btnLoadMore" onclick="loadMorePortfolios()">
-                    <span class="spinner-border spinner-border-sm d-none me-2" id="loadMoreSpinner" role="status"></span>
-                    Xem thêm
-                </button>
-            </div>
+             <?php if (!empty($portfolios) && count($portfolios) > 6): ?>
+                <div class="text-center mt-4" id="seeMoreWrapper">
+                    <button id="seeMoreBtn" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold">
+                        <!-- Trạng thái 1: Xem thêm -->
+                        <span class="btn-text-more">
+                            Xem thêm <i class="bi bi-chevron-down ms-1"></i>
+                        </span>
+                        <!-- Trạng thái 2: Thu gọn (Mặc định ẩn) -->
+                        <span class="btn-text-less d-none">
+                            Thu gọn <i class="bi bi-chevron-up ms-1"></i>
+                        </span>
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
     </section>
 
@@ -633,6 +647,8 @@
         xhr.send();
     }
     </script>  
+
+    <!--Reload page automatically-->
     <script>
         window.addEventListener('pageshow', function (event) {
             // Kiểm tra nếu trang được tải ra từ bộ nhớ tạm (Cache/BFCache)
@@ -645,5 +661,40 @@
             }
         });
         </script>                  
+
+        <!--Xem them button-->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const seeMoreBtn = document.getElementById('seeMoreBtn');
+
+                if (seeMoreBtn) {
+                    seeMoreBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        
+                        const extraCards = document.querySelectorAll('.extra-profile');
+                        const textMore = seeMoreBtn.querySelector('.btn-text-more');
+                        const textLess = seeMoreBtn.querySelector('.btn-text-less');
+                        const isExpanded = seeMoreBtn.getAttribute('data-expanded') === 'true';
+
+                        // 1. Ẩn / Hiện các card từ thứ 7 trở đi
+                        extraCards.forEach(card => card.classList.toggle('d-none', isExpanded));
+
+                        // 2. Chuyển đổi giữa "Xem thêm" và "Thu gọn"
+                        if (textMore && textLess) {
+                            textMore.classList.toggle('d-none', !isExpanded);
+                            textLess.classList.toggle('d-none', isExpanded);
+                        }
+
+                        // 3. Cập nhật thuộc tính trạng thái
+                        seeMoreBtn.setAttribute('data-expanded', !isExpanded);
+
+                        // 4. Cuộn mượt lên lại đầu danh sách khi thu gọn
+                        if (isExpanded) {
+                            document.getElementById('portfolioGrid').scrollIntoView({ behavior: 'smooth' });
+                        }
+                    });
+                }
+            });
+            </script>
     </body>
 </html>
