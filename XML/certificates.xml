@@ -6,14 +6,16 @@
         <organization>Amazon Web Services</organization>
         <field>Cloud Computing</field>
         <level>Associate / Professional</level>
-        <description>Chứng chỉ điện toán đám mây phổ biến nhất thế giới, đánh giá khả năng thiết kế hệ thống trên AWS.</description>
+        <description>Chứng chỉ điện toán đám mây phổ biến nhất thế giới, đánh giá khả năng thiết kế
+            hệ thống trên AWS.</description>
     </cert>
     <cert id="GC02">
         <name>PMP (Project Management Professional)</name>
         <organization>PMI</organization>
         <field>Quản lý dự án</field>
         <level>Expert</level>
-        <description>Tiêu chuẩn vàng quốc tế dành cho các nhà quản lý dự án chuyên nghiệp trong mọi lĩnh vực.</description>
+        <description>Tiêu chuẩn vàng quốc tế dành cho các nhà quản lý dự án chuyên nghiệp trong mọi
+            lĩnh vực.</description>
     </cert>
     <cert id="GC03">
         <name>CKA (Certified Kubernetes Administrator)</name>
@@ -27,13 +29,94 @@
         <organization>Google Cloud</organization>
         <field>Cloud Computing</field>
         <level>Professional</level>
-        <description>Xếp top đầu về mức lương trong ngành IT, chứng nhận năng lực kiến trúc hạ tầng trên GCP.</description>
+        <description>Xếp top đầu về mức lương trong ngành IT, chứng nhận năng lực kiến trúc hạ tầng
+            trên GCP.</description>
     </cert>
     <cert id="GC05">
         <name>CISSP (Certified Information Systems Security)</name>
         <organization>(ISC)²</organization>
         <field>Bảo mật &amp; An ninh mạng</field>
         <level>Advanced</level>
-        <description>Chứng chỉ uy tín bậc nhất thế giới dành cho các chuyên gia và lãnh đạo an toàn thông tin.</description>
+        <description>Chứng chỉ uy tín bậc nhất thế giới dành cho các chuyên gia và lãnh đạo an toàn
+            thông tin.</description>
+    </cert>
+    <cert id="GC06">
+        <name>CEH (Certified Ethical Hacker)</name>
+        <organization>EC-Council</organization>
+        <field>Bảo mật &amp; An ninh mạng</field>
+        <level>Intermediate</level>
+        <description>Chứng chỉ về kiểm thử xâm nhập và kỹ thuật tấn công, phòng thủ hệ thống.</description>
+    </cert>
+
+    <cert id="GC07">
+        <name>CompTIA Security+</name>
+        <organization>CompTIA</organization>
+        <field>Bảo mật &amp; An ninh mạng</field>
+        <level>Beginner</level>
+        <description>Chứng chỉ nền tảng về bảo mật thông tin và quản lý rủi ro.</description>
+    </cert>
+
+    <cert id="GC08">
+        <name>CompTIA Network+</name>
+        <organization>CompTIA</organization>
+        <field>Mạng máy tính</field>
+        <level>Beginner</level>
+        <description>Trang bị kiến thức về mạng LAN, WAN, TCP/IP và xử lý sự cố mạng.</description>
+    </cert>
+
+    <cert id="GC09">
+        <name>Cisco CCNA</name>
+        <organization>Cisco</organization>
+        <field>Mạng máy tính</field>
+        <level>Associate</level>
+        <description>Chứng chỉ nổi tiếng về cấu hình và quản trị thiết bị mạng Cisco.</description>
+    </cert>
+
+    <cert id="GC10">
+        <name>Cisco CCNP Enterprise</name>
+        <organization>Cisco</organization>
+        <field>Mạng máy tính</field>
+        <level>Professional</level>
+        <description>Chứng nhận chuyên sâu về hạ tầng mạng doanh nghiệp.</description>
+    </cert>
+
+    <cert id="GC11">
+        <name>Microsoft Azure Administrator Associate</name>
+        <organization>Microsoft</organization>
+        <field>Cloud Computing</field>
+        <level>Associate</level>
+        <description>Đánh giá khả năng triển khai và quản trị dịch vụ Azure.</description>
+    </cert>
+
+    <cert id="GC12">
+        <name>Microsoft Azure Solutions Architect Expert</name>
+        <organization>Microsoft</organization>
+        <field>Cloud Computing</field>
+        <level>Expert</level>
+        <description>Thiết kế giải pháp hạ tầng và ứng dụng trên Microsoft Azure.</description>
+    </cert>
+
+    <cert id="GC13">
+        <name>Google Associate Cloud Engineer</name>
+        <organization>Google Cloud</organization>
+        <field>Cloud Computing</field>
+        <level>Associate</level>
+        <description>Quản trị và triển khai dịch vụ trên Google Cloud Platform.</description>
+    </cert>
+
+    <cert id="GC14">
+        <name>Oracle Certified Professional Java Developer</name>
+        <organization>Oracle</organization>
+        <field>Lập trình Java</field>
+        <level>Professional</level>
+        <description>Đánh giá kỹ năng phát triển ứng dụng Java chuyên nghiệp.</description>
+    </cert>
+
+    <cert id="GC15">
+        <name>Oracle Database Administrator Certified Professional</name>
+        <organization>Oracle</organization>
+        <field>Cơ sở dữ liệu</field>
+        <level>Professional</level>
+        <description>Quản trị và tối ưu hệ quản trị cơ sở dữ liệu Oracle.</description>
     </cert>
 </certificates>
