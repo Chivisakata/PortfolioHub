@@ -256,6 +256,12 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a class="dropdown-item py-2 d-flex align-items-center" href="pages/likedProfile.php">
+                                            <i class="bi bi-heart-fill text-danger me-2"></i>
+                                            <span>Portfolio đã thích</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-body" href="#">
                                             <i class="bi bi-gear text-secondary fs-5"></i>
                                             <span>Cài đặt tài khoản</span>
