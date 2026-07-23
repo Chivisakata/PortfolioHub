@@ -23,32 +23,43 @@
     }
 
     //kiểm tra email và mật khẩu có tồn tại trong cơ sở dữ liệu
-    $sql = "SELECT id, email, role, hashedPsswd FROM users WHERE email = ?";
+    $sql = "SELECT id, email, role, hashedPsswd, status FROM users WHERE email = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $email);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     if (mysqli_num_rows($result) > 0) {
         $user = mysqli_fetch_assoc($result);
+        //Kiểm tra mật khẩu
         if(password_verify($password, $user['hashedPsswd'])){
-            $sql = "SELECT name, email, pfp FROM profiles WHERE uid = ?";
-            $stmt = mysqli_prepare($conn, $sql);
-            mysqli_stmt_bind_param($stmt, "i", $user['id']);
-            mysqli_stmt_execute($stmt);
-            $profile = mysqli_stmt_get_result($stmt);
-            $profile = mysqli_fetch_assoc($profile);
-            $_SESSION["userId"] = $user['id'];
-            $_SESSION["email"] = $user['email'];
-            $_SESSION["role"] = $user['role'];
-            $_SESSION["profileName"] = $profile['name'];
-            $_SESSION["profileEmail"] = $profile['email'];
-            $_SESSION['pfp'] = $profile['pfp'];
-            $_SESSION["success"] = "Đăng nhập thành công!";
-
-
-            // var_dump($_SESSION);
-            header("Location: ../index.php");
+            // Kiểm tra tài khoản có bị khóa không
+            if ($user['status'] == 0) {
+            $errors[] = "Tài khoản của bạn hiện đang bị khóa!";
+            $_SESSION["error"] = $errors[0];
+            header("Location: ../pages/login.php");
             exit();
+            }
+            else
+                {
+                    $sql = "SELECT name, email, pfp FROM profiles WHERE uid = ?";
+                    $stmt = mysqli_prepare($conn, $sql);
+                    mysqli_stmt_bind_param($stmt, "i", $user['id']);
+                    mysqli_stmt_execute($stmt);
+                    $profile = mysqli_stmt_get_result($stmt);
+                    $profile = mysqli_fetch_assoc($profile);
+                    $_SESSION["userId"] = $user['id'];
+                    $_SESSION["email"] = $user['email'];
+                    $_SESSION["role"] = $user['role'];
+                    $_SESSION["profileName"] = $profile['name'];
+                    $_SESSION["profileEmail"] = $profile['email'];
+                    $_SESSION['pfp'] = $profile['pfp'];
+                    $_SESSION["success"] = "Đăng nhập thành công!";
+
+
+                    // var_dump($_SESSION);
+                    header("Location: ../index.php");
+                    exit();
+                }   
         }
         else {
             $errors[] = "Email hoặc mật khẩu không đúng!";
@@ -56,7 +67,7 @@
     } else {
        $errors[] = "Email hoặc mật khẩu không đúng!"; 
     }
-     // Nếu có lỗi, trả về lỗi
+    // Nếu có lỗi, trả về lỗi
     if (!empty($errors)) {
         $_SESSION["error"] = $errors[0];
         header("Location: ../pages/login.php");

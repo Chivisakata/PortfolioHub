@@ -649,7 +649,7 @@
         };
 
         // Mở kết nối và gửi yêu cầu tới file certificates.xml
-        xhr.open("GET", "XML/certificates.xml", true);
+        xhr.open("GET", "XML/certificates.xml?t=" + Date.now(), true);
         xhr.send();
     }
     </script>  
