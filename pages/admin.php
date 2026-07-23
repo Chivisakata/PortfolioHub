@@ -1,6 +1,15 @@
 <?php
     require_once '../config/dbContext.php';
     session_start();
+    if (!isset($_SESSION["userId"])) {
+    header("Location: login.php");
+    exit();
+    }
+
+    if ($_SESSION["role"] != 0) {
+        http_response_code(403);
+        exit("403 Forbidden - Bạn không có quyền truy cập trang này.");
+    }
 ?>
 <!DOCTYPE html>
 <html lang="vi" data-bs-theme="light">

@@ -35,7 +35,7 @@ try {
     $user = $result->fetch_assoc();
 
     if (!$user) {
-        die("Người dùng này không tồn tại trong hệ thống.");
+        die("Hồ sơ người dùng này không tồn tại trong hệ thống.");
     }
 
     // 4. Fetch all projects tied to this user's unique id (projects.uid)
