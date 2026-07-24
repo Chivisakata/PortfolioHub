@@ -114,6 +114,10 @@ $stmtCount->close();
         .card-custom { border-radius: 20px; border: 1px solid var(--bs-border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
         p {font-size: 18px;}
         .web:hover{cursor:pointer;}
+        .custom-gradient {
+        background: linear-gradient(90deg, #7B2FF7, #9F44D3);
+        border: none;
+        }
     </style>
 </head>
 <body class="bg-body-tertiary">
@@ -183,7 +187,7 @@ $stmtCount->close();
                     <?php else: ?>
                         <!-- Thêm class w-100 w-lg-auto để các nút chiếm trọn chiều rộng khi thu nhỏ trên mobile -->
                         <button class="btn btn-outline-secondary px-4 rounded-pill w-100 w-lg-auto" type="button" onclick="window.location.href='login.php'">Đăng nhập</button>
-                        <button class="btn btn-primary px-4 rounded-pill shadow-sm w-100 w-lg-auto" style="background: var(--primary-gradient); border: none;" type="button" onclick="window.location.href='register.php'">Bắt đầu ngay</button>
+                        <button class="btn btn-primary px-4 rounded-pill shadow-sm w-100 w-lg-auto custom-gradient" type="button" onclick="window.location.href='register.php'">Bắt đầu ngay</button>
                     <?php endif; ?>
                     
                 </div>
