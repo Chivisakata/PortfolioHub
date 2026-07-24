@@ -152,7 +152,6 @@
         require_once 'config/dbContext.php';
 
         try {
-            // Cập nhật câu SQL: Lấy thêm cột ud.skills và thêm vào GROUP BY
             $query = "
                 SELECT 
                     p.uid, 
@@ -172,7 +171,6 @@
                 LIMIT 20
             ";
 
-            // Run query with MySQLi
             $result = $conn->query($query);
 
             if (!$result) {
@@ -190,8 +188,7 @@
             }
         ?>
 
-
-
+        <!--Items on the left of navbar-->
         <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color:black ;">        <!--Name on navbar-->
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2" href="#">
@@ -202,7 +199,6 @@
                 
                 </a>
                     
-                <!--Hamburger button when window scale down-->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -230,19 +226,17 @@
                         <?php if (isset($_SESSION["userId"])):?>
                             <div class="dropdown" id="userDropdownBlock">
                             <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle border-0 outline-none shadow-none" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="box-shadow: none !important; outline: none !important;">
-                                <!-- Avatar tròn bo góc hoàn hảo, dùng bg-transparent để không bị lộ viền xanh -->
                                 <div class="rounded-circle bg-transparent d-flex align-items-center justify-content-center overflow-hidden border" style="width: 40px; height: 40px; min-width: 40px;" id="userAvatar">
                                     <img src="<?= htmlspecialchars(!empty($_SESSION['pfp']) ? 'images/pfps/' . $_SESSION['pfp'] : 'images/profile.png') ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover; display: block;" alt="Avatar">
                                 </div>
-                                
-                                <!-- Tên hiển thị -->
+
                                 <span class="fw-semibold small d-none d-md-inline" id="userFullName">
                                     <?= htmlspecialchars($_SESSION["profileName"] ?? '') ?>
                                 </span>
 
                             </a>
 
-                                <!-- Danh sách thả xuống Dropdown Menu -->
+                                <!-- Dropdown menu -->
                                 <ul class="dropdown-menu dropdown-menu-end shadow-lg border mt-2" aria-labelledby="profileDropdown">
                                     <!-- Tên di động ẩn/hiện -->
                                     <li class="px-3 py-2 border-bottom d-md-none">
@@ -278,7 +272,6 @@
                             </div>
 
                         <?php else: ?>
-                            <!-- Chỉ hiển thị cụm nút này khi CHƯA đăng nhập -->
                             <button class="btn btn-outline-secondary px-4 rounded-pill" type="button" onclick="window.location.href='./pages/login.php'">Đăng nhập</button>
                             <button class="btn btn-primary px-4 rounded-pill shadow-sm" style="background: var(--primary-gradient); border: none;" type="button" onclick="window.location.href='./pages/register.php'">Bắt đầu ngay</button>
                         <?php endif; ?>
@@ -298,13 +291,11 @@
                         <p class="lead text-secondary mb-4">
                             Nơi hội tụ hàng nghìn hồ sơ năng lực ấn tượng từ các lập trình viên, nhà thiết kế, nhiếp ảnh gia và người sáng tạo nội dung hàng đầu. Thiết lập dễ dàng trong 5 phút.
                         </p>
-                        
-                        <!-- Integrated dynamic search inside home -->
+
                         <div class="search-container mb-4">
                             <i class="bi bi-search text-secondary fs-5 me-2"></i>
                             <input type="text" id="homeSearchInput" placeholder="Tìm kiếm tài năng, kỹ năng (ví dụ: React, UI/UX, Figma...)" aria-label="Tìm kiếm portfolio">
-                            
-                            <!-- Cập nhật lại thuộc tính onclick để truyền kèm giá trị của ô input -->
+
                             <button class="btn btn-primary px-4 py-2 rounded-pill shadow-sm" 
                                     style="background: var(--primary-gradient); border: none;" 
                                     onclick="const kw = encodeURIComponent(document.getElementById('homeSearchInput').value); window.location.href='./pages/searchingResult.php?keyword=' + kw;">
@@ -361,7 +352,6 @@
                     <?php 
                     $index = 0;
                     foreach ($portfolios as $portfolio): 
-                        // Gán class 'extra-profile' cố định và 'd-none' để ẩn ban đầu
                         $extraClass = ($index >= 6) ? 'extra-profile d-none' : '';
                         $index++;
                     ?>
@@ -379,11 +369,9 @@
                                 <div class="card-body p-0 mb-3">
                                     <h6 class="fw-semibold text-body mb-2"><?= htmlspecialchars($portfolio['field']) ?></h6>
                                     
-                                    <!-- Khu vực hiển thị Kỹ năng dưới dạng Badge nhỏ gọn, tinh tế -->
                                     <div class="d-flex flex-wrap gap-1 mt-2">
                                         <?php 
                                         if (!empty($portfolio['skills'])) {
-                                            // Tách chuỗi kỹ năng bằng dấu chấm phẩy hoặc dấu phẩy
                                             $skillsArray = preg_split('/[;,]/', $portfolio['skills']);
                                             foreach ($skillsArray as $skill) {
                                                 $trimmedSkill = trim($skill);
@@ -421,11 +409,11 @@
              <?php if (!empty($portfolios) && count($portfolios) > 6): ?>
                 <div class="text-center mt-4" id="seeMoreWrapper">
                     <button id="seeMoreBtn" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold">
-                        <!-- Trạng thái 1: Xem thêm -->
+                        <!-- Xem thêm -->
                         <span class="btn-text-more">
                             Xem thêm <i class="bi bi-chevron-down ms-1"></i>
                         </span>
-                        <!-- Trạng thái 2: Thu gọn (Mặc định ẩn) -->
+                        <!-- Thu gọn (Mặc định ẩn) -->
                         <span class="btn-text-less d-none">
                             Thu gọn <i class="bi bi-chevron-up ms-1"></i>
                         </span>
@@ -435,8 +423,6 @@
         </div>
     </section>
 
-                     
-    <!-- How it Works Step-by-Step -->
     <section class="py-5" id="how-it-works">
         <div class="container">
             <div class="text-center mb-5">
@@ -490,12 +476,12 @@
                     Tra cứu các chứng chỉ chuyên môn được săn đón nhất trong ngành IT
             </div>
 
-            <!-- Nút bấm Bật / Tắt danh sách -->
+            <!--  Bật / Tắt danh sách -->
             <button class="btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold shadow-sm" id="btnToggleCert" onclick="toggleCertificates()">
                 </i> Xem các chứng chỉ phổ biến
             </button>
 
-            <!-- Khung chứa bảng dữ liệu XML (Mặc định ẩn d-none) -->
+            <!-- Khung chứa dữ liệu XML (Mặc định ẩn d-none) -->
             <div class="mt-4 d-none" id="certContainer">
                 <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-start">
                     <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
@@ -514,7 +500,7 @@
                                 </tr>
                             </thead>
                             <tbody id="certTableBody" class="small">
-                                <!-- Dữ liệu XML sẽ được duyệt Node và chèn vào đây -->
+                                <!-- Dữ liệu XML sẽ được duyệt Node và chèn vào -->
                             </tbody>
                         </table>
                     </div>
@@ -602,8 +588,7 @@
                 // Lấy danh sách các thẻ <cert>
                 const certNodes = xmlDoc.getElementsByTagName("cert");
     
-
-                // 2. Vận dụng các thuộc tính Node (firstChild, nextSibling) để duyệt XML
+                // 2. Vận dụng các thuộc tính Node  để duyệt XML
                 for (let i = 0; i < certNodes.length; i++) {
                     const cert = certNodes[i];
                     const certId = cert.getAttribute("id");
@@ -630,7 +615,7 @@
                         childNode = childNode.nextSibling;
                     }
 
-                    // Render dữ liệu vào dòng của bảng
+                    // Render dữ liệu vào từng dòng
                     const row = `
                         <tr>
                             <td class="text-center fw-bold text-secondary">${certId}</td>
@@ -644,11 +629,11 @@
                     tbody.innerHTML += row;
                 }
 
-                isXmlLoaded = true; // Đánh dấu đã nạp thành công
+                isXmlLoaded = true; // Đánh dấu load thành công
             }
         };
 
-        // Mở kết nối và gửi yêu cầu tới file certificates.xml
+        // Kết nối và gửi yêu cầu tới file certificates.xml
         xhr.open("GET", "XML/certificates.xml?t=" + Date.now(), true);
         xhr.send();
     }
@@ -662,7 +647,6 @@
                 (typeof window.performance != 'undefined' && window.performance.navigation.type === 2);
             
             if (historyTraversal) {
-                // Tải lại trang để lấy số lượt thích mới nhất từ database
                 window.location.reload();
             }
         });

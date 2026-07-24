@@ -8,9 +8,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 $id = intval($data["id"]);
 
-/*=========================
-    PROFILES
-=========================*/
+// PROFILES
 
 $sql = "UPDATE profiles
         SET
@@ -25,9 +23,7 @@ $sql = "UPDATE profiles
 $conn->query($sql);
 
 
-/*=========================
-    USERDETAILS
-=========================*/
+// USERDETAILS
 
 $sql = "UPDATE userdetails
         SET
@@ -38,16 +34,12 @@ $sql = "UPDATE userdetails
 $conn->query($sql);
 
 
-/*=========================
-    WORK EXPERIENCE
-=========================*/
+// WORKS_EXPERIENCES
 
 $conn->query("DELETE FROM work_exp WHERE uid = $id");
 
 
-/*=========================
-    PROJECTS
-=========================*/
+// PROJECTS
 
 $conn->query("DELETE FROM projects WHERE uid = $id");
 

@@ -12,11 +12,11 @@ $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
 $searchResults = [];
 
 if (!empty($keyword)) {
-    // 1. Chuẩn bị từ khóa cho FULLTEXT MODE và LIKE MODE
+    // Chuẩn bị từ khóa cho FULLTEXT MODE và LIKE MODE
     $searchParamBoolean = $keyword . '*'; 
     $searchParamLike = '%' . $keyword . '%';
 
-    // 2. Câu lệnh kết hợp: Nếu MATCH AGAINST không ra (do thiếu index) thì LIKE sẽ cứu cánh
+    // Câu lệnh kết hợp: Nếu không dùng MATCH AGAINST được thì dùng LIKE
     $sql = "SELECT u.*, ud.skills, c.name AS category_name
             FROM users u
             LEFT JOIN userdetails ud ON u.id = ud.uid

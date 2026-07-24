@@ -121,14 +121,11 @@ if (!empty($keyword)) {
                 <span class="fs-4 fw-bold text-body">Portfolio<span class="text-primary">Hub</span></span>
             </a>
                 
-            <!-- Nút Hamburger hiển thị trên mobile -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- SỬA TẠI ĐÂY: Bổ sung lớp collapse để thu gọn giao diện trên thiết bị nhỏ -->
             <div class="collapse navbar-collapse" id="navbarContent">
-                <!-- Thêm flex-column trên mobile, flex-row trên PC và dịch qua phải bằng ms-auto -->
                 <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-3 ms-auto mt-3 mt-lg-0">
                     
                     <!-- Light/Dark Mode Switcher -->
@@ -169,7 +166,6 @@ if (!empty($keyword)) {
                             </ul>
                         </div>
                     <?php else: ?>
-                        <!-- Thêm class w-100 w-lg-auto để các nút chiếm trọn chiều rộng khi thu nhỏ trên mobile -->
                         <button class="btn btn-outline-secondary px-4 rounded-pill w-100 w-lg-auto" type="button" onclick="window.location.href='login.php'">Đăng nhập</button>
                         <button class="btn btn-primary px-4 rounded-pill shadow-sm w-100 w-lg-auto" style="background: var(--primary-gradient); border: none;" type="button" onclick="window.location.href='register.php'">Bắt đầu ngay</button>
                     <?php endif; ?>
@@ -203,14 +199,11 @@ if (!empty($keyword)) {
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             <?php if (!empty($searchResults)): ?>
                 <?php foreach ($searchResults as $portfolio): ?>
-                    <!-- Bỏ qua tài khoản hệ thống trống thông tin để giữ giao diện đẹp -->
                     <?php if (empty($portfolio['name']) && empty($portfolio['tech'])) continue; ?>
 
                     <div class="col">
-                        <!-- Khởi đầu cấu trúc component Card chuẩn của bạn -->
                         <div class="card card-portfolio h-100 p-3">
                             <div class="d-flex align-items-center gap-3 mb-3">
-                                <!-- Đường dẫn ảnh đại diện lùi 1 thư mục cấp cha nếu thư mục lưu trữ images nằm ở root -->
                                 <img src="<?= htmlspecialchars($portfolio['pfp'] ?: '../images/profile.png') ?>" class="rounded-circle shadow-sm" style="width: 55px; height: 55px; object-fit: cover;" alt="Avatar">
                                 <div>
                                     <h5 class="fw-bold mb-0 text-body" style="font-size: 1.1rem;"><?= htmlspecialchars($portfolio['name'] ?? 'Thành viên mới') ?></h5>

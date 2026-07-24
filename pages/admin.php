@@ -57,7 +57,7 @@
 </head>
 <body class="bg-body-tertiary">
 
-    <!-- Header / Navbar -->
+    <!--Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top bg-body border-bottom py-3" style="backdrop-filter: blur(8px); background: rgba(var(--bs-body-bg-rgb), 0.85) !important; z-index: 1030;">
         <div class="container-fluid px-4">
             <a class="navbar-brand fw-bold d-flex align-items-center gap-2">
@@ -86,7 +86,7 @@
             </button>
         </div>
 
-        <!-- 1. Stats Bar (Thống kê số lượng người dùng) -->
+        <!-- Stats Bar-->
         <?php
             // Lấy tổng số người dùng từ cơ sở dữ liệu
             $sql = "SELECT COUNT(*) AS total_users FROM users";
@@ -94,7 +94,7 @@
             $row = $result->fetch_assoc();
             $totalUsers = $row["total_users"];
 
-            // Lấy tổng số portfolio từ cơ sở dữ liệu
+            // Lấy tổng số portfolio từ DB
             $sql = "SELECT COUNT(*) AS total_portfolios FROM profiles";
             $result = $conn->query($sql);
             $row = $result->fetch_assoc();
@@ -131,7 +131,7 @@
             </div>
         </div>
 
-        <!-- 2. Search & Filter Bar (Tìm kiếm & Lọc người dùng) -->
+        <!--  Search & Filter Bar -->
         <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 bg-body">
             <div class="row g-3 align-items-center">
                 <div class="col-md-6 col-lg-5">
@@ -144,7 +144,7 @@
             </div>
         </div>
 
-        <!-- 3. User List Table (Bảng danh sách người dùng & Thao tác) -->
+        <!--  User List Table  -->
         <div class="table-custom bg-body shadow-sm">
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
@@ -165,7 +165,7 @@
 
     </main>
 
-    <!-- Modal Xác Nhận Xóa Hồ Sơ -->
+    <!-- Xác Nhận Xóa Hồ Sơ -->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content rounded-4 border-0 shadow">
@@ -184,7 +184,7 @@
         </div>
     </div>
 
-    <!-- Toast Thông Báo -->
+    <!-- Thông Báo -->
     <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 1060">
         <div id="liveToast" class="toast align-items-center text-white bg-dark border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
@@ -194,7 +194,6 @@
         </div>
     </div>
 
-    <!-- Bootstrap 5 bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // --- Mock Data Danh Sách Người Dùng ---
@@ -264,7 +263,7 @@
             renderUserTable(usersData);
         }
 
-        // --- Đổi Trạng Thái Khóa / Mở Khóa ---
+        // --- Đổi Trạng Thái Khóa ---
        async function toggleUserLock(userId){
             const response = await fetch("../actions/toggleUserStatus.php",{
                 method:"POST",

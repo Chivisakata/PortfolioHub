@@ -162,9 +162,7 @@ $portfolios = $result->fetch_all(MYSQLI_ASSOC);
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- SỬA TẠI ĐÂY: Bổ sung lớp collapse để thu gọn giao diện trên thiết bị nhỏ -->
             <div class="collapse navbar-collapse" id="navbarContent">
-                <!-- Thêm flex-column trên mobile, flex-row trên PC và dịch qua phải bằng ms-auto -->
                 <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-3 ms-auto mt-3 mt-lg-0">
                     
                     <!-- Light/Dark Mode Switcher -->
@@ -176,7 +174,6 @@ $portfolios = $result->fetch_all(MYSQLI_ASSOC);
                     <?php if (isset($_SESSION["userId"])): ?>
                         <div class="dropdown" id="userDropdownBlock">
                             <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle border-0 outline-none shadow-none" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="box-shadow: none !important; outline: none !important;">
-                                <!-- Avatar tròn bo góc hoàn hảo, dùng bg-transparent để không bị lộ viền xanh -->
                                 <div class="rounded-circle bg-transparent d-flex align-items-center justify-content-center overflow-hidden border" style="width: 40px; height: 40px; min-width: 40px;" id="userAvatar">
                                     <img src="<?= htmlspecialchars(!empty($_SESSION['pfp']) ? '../images/pfps/' . $_SESSION['pfp'] : '../images/profile.png') ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover; display: block;" alt="Avatar">
                                 </div>
@@ -211,7 +208,6 @@ $portfolios = $result->fetch_all(MYSQLI_ASSOC);
                             </ul>
                         </div>
                     <?php else: ?>
-                        <!-- Thêm class w-100 w-lg-auto để các nút chiếm trọn chiều rộng khi thu nhỏ trên mobile -->
                         <button class="btn btn-outline-secondary px-4 rounded-pill w-100 w-lg-auto" type="button" onclick="window.location.href='login.php'">Đăng nhập</button>
                         <button class="btn btn-primary px-4 rounded-pill shadow-sm w-100 w-lg-auto" style="background: var(--primary-gradient); border: none;" type="button" onclick="window.location.href='register.php'">Bắt đầu ngay</button>
                     <?php endif; ?>
@@ -229,7 +225,6 @@ $portfolios = $result->fetch_all(MYSQLI_ASSOC);
                     <div class="col-md-6 col-lg-4">
                        <div class="card card-portfolio h-100 p-3">
                             
-                            <!-- Header: Avatar + Tên + Ngành nghề -->
                             <div class="d-flex align-items-center gap-3 mb-3">
                                 <img src="<?= !empty($portfolio['pfp']) ? htmlspecialchars('../images/pfps/' . $portfolio['pfp']) : '../images/profile.png' ?>" 
                                      class="rounded-circle border" style="width: 50px; height: 50px; object-fit: cover;" alt="Avatar">
@@ -241,17 +236,15 @@ $portfolios = $result->fetch_all(MYSQLI_ASSOC);
                                 </div>
                             </div>
 
-                            <!-- Body: Tiêu đề công việc + Badges Kỹ năng -->
                             <div class="mb-3">
                                 <h6 class="fw-bold text-body mb-2" style="font-size: 0.95rem;">
                                     <?= htmlspecialchars($portfolio['title'] ?? $portfolio['field'] ?? '') ?>
                                 </h6>
                                 
-                                <!-- Hiển thị danh sách Skills dạng Pill Badges -->
                                 <div class="d-flex flex-wrap gap-1 mt-2">
                                         <?php 
                                         if (!empty($portfolio['skills'])) {
-                                            // Tách chuỗi kỹ năng bằng dấu chấm phẩy hoặc dấu phẩy
+                                            // Tách chuỗi kỹ năng bằng dấu chấm phẩy
                                             $skillsArray = preg_split('/[;,]/', $portfolio['skills']);
                                             foreach ($skillsArray as $skill) {
                                                 $trimmedSkill = trim($skill);
@@ -266,7 +259,6 @@ $portfolios = $result->fetch_all(MYSQLI_ASSOC);
                                     </div>
                             </div>
 
-                            <!-- Footer: Icon Lượt thích + Nút Xem Portfolio -->
                             <div class="card-footer bg-transparent border-0 p-0 mt-auto pt-3 border-top d-flex align-items-center justify-content-between text-secondary" style="font-size: 0.85rem;">
                                 <div class="d-flex align-items-center gap-1">
                                     <i class="bi bi-heart"></i>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 header("Content-Type: application/json");
-require_once '../config/dbContext.php';    // file kết nối MySQL
+require_once '../config/dbContext.php';    // kết nối MySQL
 
 $id = isset($_SESSION['userId']) ? $_SESSION['userId'] : "";
 // Thông tin chính

@@ -20,7 +20,7 @@
     if (empty($password)) {
         $errors[] = "Mật khẩu không được để trống!";
     } elseif (!preg_match($passwordPattern, $password)) {
-        // ⚡ Hàm preg_match dùng để khớp chuỗi Regex trong PHP
+        //  Hàm preg_match dùng để khớp chuỗi Regex trong PHP
         $errors[] = "Mật khẩu chỉ chứa kí tự A-Z, a-z hoặc 0-9 và kí tự đặc biệt, không chứa khoảng trắng và có ít nhất 1 chữ hoặc 1 số, độ dài từ 8 đến 32 kí tự nhé!";
     }
     // 3. Kiểm tra mật khẩu xác nhận có trùng khớp không
@@ -37,13 +37,13 @@
          $errors[] = "Email đã tồn tại!";     
     }
     
-    // Nếu có lỗi, trả về lỗi
+    // Trả về lỗi nếu có
     if (!empty($errors)) {
         $_SESSION["error"] = $errors[0];
         header("Location: ../pages/register.php");
         exit();
     }else{
-        // Nếu không có lỗi, tiến hành đăng ký người dùng
+        // Đăng ký người dùng nếu không lỗi
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $role = 1; // 1 là user, 0 là admin
         $sql = "INSERT INTO users (role, email, hashedPsswd) VALUES (?, ?, ?)";

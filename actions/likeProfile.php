@@ -38,10 +38,10 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    // Unlike: Record exists, so delete it
+    // Unlike: Record exists => delete it
     $actionQuery = "DELETE FROM likes WHERE uid = ? AND liked_by = ?";
 } else {
-    // Like: Record doesn't exist, so insert it
+    // Like: Record doesn't exist => insert it
     $actionQuery = "INSERT INTO likes (uid, liked_by) VALUES (?, ?)";
 }
 
@@ -52,8 +52,6 @@ $actionStmt->execute();
 $actionStmt->close();
 $stmt->close();
 
-
-// 5. Un-commented redirection to make it work seamlessly on your live site
 header("Location: ../pages/detail.php?id=" . $uid);
 exit();
 

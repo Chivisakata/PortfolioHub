@@ -1,10 +1,8 @@
 <?php
-// 1. MUST BE AT THE ABSOLUTE TOP to enable user session tracking!
 session_start();
 
 require_once '../config/dbContext.php'; 
 
-// 2. Capture the unique user id sent from the URL query parameter (?id=X)
 $userId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($userId <= 0) {
@@ -12,7 +10,7 @@ if ($userId <= 0) {
 }
 
 try {
-    // 3. Fetch basic profile info matching this specific ID (Bổ sung trường skills)
+    //  Fetch data matching user id
     $userQuery = "
         SELECT 
             name, 
@@ -38,7 +36,7 @@ try {
         die("Hồ sơ người dùng này không tồn tại trong hệ thống.");
     }
 
-    // 4. Fetch all projects tied to this user's unique id (projects.uid)
+    // Fetch all projects tied to this user's id
     $projectQuery = "
         SELECT project_name, tech, description 
         FROM projects 
@@ -54,7 +52,7 @@ try {
         $projects[] = $row;
     }
   
-    // Showing not set avatar with the initials of user's name
+    // Showing not set avatar
     $nameParts = explode(" ", $user['name']);
     $initials = (count($nameParts) >= 2) 
         ? mb_substr($nameParts[count($nameParts)-2], 0, 1) . mb_substr($nameParts[count($nameParts)-1], 0, 1)
@@ -65,12 +63,12 @@ try {
     die("Lỗi kết nối cơ sở dữ liệu: " . $e->getMessage());
 }
 
-// 5. Updated Login Fallback to -1 (Fixes the admin ID 0 collision)
+//  Updated Login Fallback to -1 (Fixes the admin ID 0 collision)
 $currentLoggedInUser = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : -1;
 $hasLiked = false;
 
 if ($currentLoggedInUser !== -1) {
-    // Check if the current logged-in user is one of the people who liked this profile
+    // Check if current user liked this profile?
     $likeCheck = "SELECT * FROM likes WHERE uid = ? AND liked_by = ?";
     $stmtLike = $conn->prepare($likeCheck);
     $stmtLike->bind_param("ii", $userId, $currentLoggedInUser);
@@ -83,7 +81,7 @@ if ($currentLoggedInUser !== -1) {
     $stmtLike->close();
 }
 
-// Get the total number of likes for this profile (counting rows matching this uid)
+// Get the total number of likes for this profile (count in db)
 $countQuery = "SELECT COUNT(*) as total_likes FROM likes WHERE uid = ?";
 $stmtCount = $conn->prepare($countQuery);
 $stmtCount->bind_param("i", $userId);
@@ -121,7 +119,7 @@ $stmtCount->close();
     </style>
 </head>
 <body class="bg-body-tertiary">
-    <!-- Navbar (Thanh điều hướng cố định đã sửa responsive) -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top border-bottom py-3" style="backdrop-filter: blur(12px); border-color: black;">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="../index.php">
@@ -131,14 +129,11 @@ $stmtCount->close();
                 <span class="fs-4 fw-bold text-body">Portfolio<span class="text-primary">Hub</span></span>
             </a>
                 
-            <!-- Nút Hamburger hiển thị trên mobile -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- SỬA TẠI ĐÂY: Bổ sung lớp collapse để thu gọn giao diện trên thiết bị nhỏ -->
             <div class="collapse navbar-collapse" id="navbarContent">
-                <!-- Thêm flex-column trên mobile, flex-row trên PC và dịch qua phải bằng ms-auto -->
                 <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-3 ms-auto mt-3 mt-lg-0">
                     
                     <!-- Light/Dark Mode Switcher -->
@@ -150,7 +145,6 @@ $stmtCount->close();
                     <?php if (isset($_SESSION["userId"])): ?>
                         <div class="dropdown" id="userDropdownBlock">
                             <a class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle border-0 outline-none shadow-none" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="box-shadow: none !important; outline: none !important;">
-                                <!-- Avatar tròn bo góc hoàn hảo, dùng bg-transparent để không bị lộ viền xanh -->
                                 <div class="rounded-circle bg-transparent d-flex align-items-center justify-content-center overflow-hidden border" style="width: 40px; height: 40px; min-width: 40px;" id="userAvatar">
                                     <img src="<?= htmlspecialchars(!empty($_SESSION['pfp']) ? '../images/pfps/' . $_SESSION['pfp'] : '../images/profile.png') ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover; display: block;" alt="Avatar">
                                 </div>
@@ -185,7 +179,6 @@ $stmtCount->close();
                             </ul>
                         </div>
                     <?php else: ?>
-                        <!-- Thêm class w-100 w-lg-auto để các nút chiếm trọn chiều rộng khi thu nhỏ trên mobile -->
                         <button class="btn btn-outline-secondary px-4 rounded-pill w-100 w-lg-auto" type="button" onclick="window.location.href='login.php'">Đăng nhập</button>
                         <button class="btn btn-primary px-4 rounded-pill shadow-sm w-100 w-lg-auto custom-gradient" type="button" onclick="window.location.href='register.php'">Bắt đầu ngay</button>
                     <?php endif; ?>
@@ -231,7 +224,6 @@ $stmtCount->close();
                                     </button>
 
                                 <?php else: ?>
-                                    <!-- Cả thành viên và Khách chưa đăng nhập đều dùng chung Form này -->
                                     <form action="../actions/likeProfile.php" method="POST" class="m-0">
                                         <input type="hidden" name="uid" value="<?= $userId ?>">
                                         <button type="submit" class="btn <?= $hasLiked ? 'btn-danger' : 'btn-outline-primary' ?> rounded-pill btn-sm px-3">
@@ -251,7 +243,7 @@ $stmtCount->close();
                             <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-geo-alt text-muted"></i><span class="text-muted"><?php echo htmlspecialchars($user['location'])?></span></div>
                             <div class="d-flex align-items-center gap-3 mb-2 small"><i class="bi bi-globe text-muted"></i><span class="text-primary web"><?php echo htmlspecialchars($user['website'])?></span></div>
                             
-                            <!-- Bổ sung hiển thị danh sách kỹ năng bên dưới website link -->
+
                             <?php if (!empty($user['skills'])): ?>
                                 <div class="mt-4 pt-2 border-top">
                                     <h6 class="fw-bold mb-2.5" style="font-size: 0.85rem;"><i class="bi bi-braces text-primary me-2"></i>Kỹ năng chuyên môn</h6>

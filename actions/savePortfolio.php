@@ -8,10 +8,7 @@ $id = isset($_SESSION['userId']) ? $_SESSION['userId'] : "";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-/*=========================
-    PROFILES
-=========================*/
-
+// PROFILES
 $name     = $data["name"];
 $email    = $data["email"];
 $location = $data["location"];
@@ -30,9 +27,7 @@ $sql = "UPDATE profiles
 $conn->query($sql);
 
 
-/*=========================
-    USERDETAILS
-=========================*/
+//USERDETAILS
 
 $skills = implode(";", $data["skills"]);
 $field = $data["title"];
@@ -45,10 +40,7 @@ $sql = "UPDATE userdetails
 
 $conn->query($sql);
 
-/*=========================
-    WORK EXPERIENCE
-=========================*/
-
+//WORK_EXPERIENCES
 $conn->query("DELETE FROM work_exp WHERE uid=$id");
 
 foreach($data["experiences"] as $exp){
@@ -74,11 +66,7 @@ foreach($data["experiences"] as $exp){
     $conn->query($sql);
 }
 
-
-/*=========================
-    PROJECTS
-=========================*/
-
+// PROJECTS
 $conn->query("DELETE FROM projects WHERE uid=$id");
 
 foreach($data["projects"] as $project){

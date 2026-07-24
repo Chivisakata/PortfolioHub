@@ -132,7 +132,7 @@
                             <input type="text" class="form-control form-control-sm rounded-3" id="inputWebsite" placeholder="Link trang web cá nhân hoặc hồ sơ GitHub/Behance">
                         </div>
 
-                        <!-- Section 3: Giới thiệu & Trợ lý AI -->
+                        <!-- Section 3: Giới thiệu -->
                         <div class="form-section-title d-flex justify-content-between align-items-center">
                             <span><i class="bi bi-chat-quote me-2"></i>Giới Thiệu Bản Thân</span>
                             <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none text-primary fw-bold" onclick="generateBioAI()">
@@ -151,7 +151,7 @@
                             <button class="btn btn-primary btn-sm" type="button" onclick="addSkill()"><i class="bi bi-plus-lg"></i> Thêm</button>
                         </div>
                         <div class="border rounded-3 p-2 bg-light-subtle d-flex flex-wrap gap-2 mb-3" id="skillsContainer" style="min-height: 40px;">
-                            <!-- Các tag kỹ năng động sẽ render ở đây -->
+
                         </div>
 
                         <!-- Section 5: Kinh nghiệm làm việc -->
