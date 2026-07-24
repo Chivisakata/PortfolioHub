@@ -154,21 +154,22 @@
         try {
             $query = "
                 SELECT 
-                    p.uid, 
-                    p.name, 
-                    p.pfp, 
-                    ud.field AS field,
-                    ud.skills AS skills,
-                    MAX(pj.tech) AS tech,
-                    (select count(*) from likes where uid = p.uid) as likes
-                FROM profiles p
-                LEFT JOIN userdetails ud ON p.uid = ud.uid 
-                LEFT JOIN projects pj ON p.uid = pj.uid
-                WHERE p.name IS NOT NULL
-                AND TRIM(p.name) <> ''
-                GROUP BY p.uid, p.name, p.pfp, ud.field, ud.skills
-                ORDER BY likes DESC, p.id ASC
-                LIMIT 20
+                p.uid, 
+                p.name, 
+                p.pfp, 
+                p.category,
+                ud.field AS field,
+                ud.skills AS skills,
+                MAX(pj.tech) AS tech,
+                (select count(*) from likes where uid = p.uid) as likes
+            FROM profiles p
+            LEFT JOIN userdetails ud ON p.uid = ud.uid 
+            LEFT JOIN projects pj ON p.uid = pj.uid
+            WHERE p.name IS NOT NULL
+            AND TRIM(p.name) <> ''
+            GROUP BY p.uid, p.name, p.pfp, p.category, ud.field, ud.skills 
+            ORDER BY likes DESC, p.id ASC
+            LIMIT 20
             ";
 
             $result = $conn->query($query);
@@ -310,22 +311,22 @@
         <div class="container text-center">
             <h5 class="text-secondary uppercase mb-4 text-xs tracking-wider">KHÁM PHÁ THEO LĨNH VỰC HÀNG ĐẦU</h5>
             <div class="d-flex flex-wrap justify-content-center gap-3">
-                <span class="category-badge active text-secondary" onclick="filterCategory('All', this)">
+                <span class="category-badge active text-secondary" onclick="filterCategory('all', this)">
                     <i class="bi bi-grid-fill me-1"></i> Tất cả
                 </span>
-                <span class="category-badge text-secondary" onclick="filterCategory('Development', this)">
+                <span class="category-badge text-secondary" onclick="filterCategory('1', this)">
                     <i class="bi bi-code-slash me-1"></i> Phát triển (Dev)
                 </span>
-                <span class="category-badge text-secondary" onclick="filterCategory('Design', this)">
+                <span class="category-badge text-secondary" onclick="filterCategory('2', this)">
                     <i class="bi bi-brush-fill me-1"></i> Thiết kế (UI/UX)
                 </span>
-                <span class="category-badge text-secondary" onclick="filterCategory('Photography', this)">
+                <span class="category-badge text-secondary" onclick="filterCategory('3', this)">
                     <i class="bi bi-camera-fill me-1"></i> Nhiếp ảnh
                 </span>
-                <span class="category-badge text-secondary" onclick="filterCategory('Writing', this)">
+                <span class="category-badge text-secondary" onclick="filterCategory('4', this)">
                     <i class="bi bi-pen-fill me-1"></i> Viết lách & Content
                 </span>
-                <span class="category-badge text-secondary" onclick="filterCategory('Marketing', this)">
+                <span class="category-badge text-secondary" onclick="filterCategory('5', this)">
                     <i class="bi bi-megaphone-fill me-1"></i> Marketing
                 </span>
             </div>
@@ -347,62 +348,64 @@
             </div>
 
             <!-- Portfolio Grid -->
-          <div class="row g-4" id="portfolioGrid">
-                <?php if (!empty($portfolios)): ?>
-                    <?php 
-                    $index = 0;
-                    foreach ($portfolios as $portfolio): 
-                        $extraClass = ($index >= 6) ? 'extra-profile d-none' : '';
-                        $index++;
-                    ?>
-                        <div class="col-md-6 col-lg-4 <?= $extraClass ?>">
-                            <div class="card card-portfolio h-100 p-3">
-                                <div class="d-flex align-items-center gap-3 mb-3">
-                                <img src="<?= !empty($portfolio['pfp'])? htmlspecialchars('images/pfps/' . $portfolio['pfp']): 'images/profile.png' ?>" class="rounded-circle shadow-sm" style="width: 55px; height: 55px; object-fit: cover;" alt="Avatar">
-                                    <div>
-                                        <h5 class="fw-bold mb-0 text-body" style="font-size: 1.1rem;"><?= htmlspecialchars($portfolio['name']) ?></h5>
-                                        <span class="text-xs text-primary fw-medium" style="font-size: 0.8rem;">
-                                            <i class="bi bi-tag-fill me-1"></i><?= htmlspecialchars($portfolio['field']) ?>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="card-body p-0 mb-3">
-                                    <h6 class="fw-semibold text-body mb-2"><?= htmlspecialchars($portfolio['field']) ?></h6>
-                                    
-                                    <div class="d-flex flex-wrap gap-1 mt-2">
-                                        <?php 
-                                        if (!empty($portfolio['skills'])) {
-                                            $skillsArray = preg_split('/[;,]/', $portfolio['skills']);
-                                            foreach ($skillsArray as $skill) {
-                                                $trimmedSkill = trim($skill);
-                                                if ($trimmedSkill !== '') {
-                                                    echo '<span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill fw-normal px-2 py-1" style="font-size: 0.75rem;">' . htmlspecialchars($trimmedSkill) . '</span>';
-                                                }
-                                            }
-                                        } else {
-                                            echo '<span class="text-muted text-xs" style="font-size: 0.8rem;">Chưa cập nhật kỹ năng</span>';
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-transparent border-0 p-0 mt-auto pt-3 border-top d-flex align-items-center justify-content-between">
-                                    <div class="d-flex gap-3 text-secondary" style="font-size: 0.85rem;">
-                                        <span><i class="bi bi-heart me-1"></i><?= (int)$portfolio['likes'] ?></span>
-                                    </div>
-                                    <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['uid'] ?>'">
-                                        Xem Portfolio <i class="bi bi-arrow-right"></i>
-                                    </button>
-                                </div>
-                            </div>
+         <div class="row g-4" id="portfolioGrid">
+    <?php if (!empty($portfolios)): ?>
+        <?php 
+        $index = 0;
+        foreach ($portfolios as $portfolio): 
+            $extraClass = ($index >= 6) ? 'extra-profile d-none' : '';
+            $index++;
+            // Retrieve category ID directly from your users table
+            $catId = $portfolio['category'] ?? '';
+        ?>
+            <!-- Added portfolio-item class and data-category attribute below -->
+            <div class="col-md-6 col-lg-4 portfolio-item <?= $extraClass ?>" data-category="<?= htmlspecialchars((string)$catId) ?>">
+                <div class="card card-portfolio h-100 p-3">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="<?= !empty($portfolio['pfp']) ? htmlspecialchars('images/pfps/' . $portfolio['pfp']) : 'images/profile.png' ?>" class="rounded-circle shadow-sm" style="width: 55px; height: 55px; object-fit: cover;" alt="Avatar">
+                        <div>
+                            <h5 class="fw-bold mb-0 text-body" style="font-size: 1.1rem;"><?= htmlspecialchars($portfolio['name'] ?? 'Chưa cập nhật') ?></h5>
+                            <span class="text-xs text-primary fw-medium" style="font-size: 0.8rem;">
+                                <i class="bi bi-tag-fill me-1"></i><?= htmlspecialchars($portfolio['cate_name'] ?? $portfolio['field'] ?? 'Chưa phân loại') ?>
+                            </span>
                         </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <div class="col-12 text-center text-muted py-5">
-                        <p class="mb-0">Hiện chưa có mẫu portfolio nào hiển thị.</p>
                     </div>
-                <?php endif; ?>
+                    <div class="card-body p-0 mb-3">
+                        <h6 class="fw-semibold text-body mb-2"><?= htmlspecialchars($portfolio['field'] ?? '') ?></h6>
+                        
+                        <div class="d-flex flex-wrap gap-1 mt-2">
+                            <?php 
+                            if (!empty($portfolio['skills'])) {
+                                $skillsArray = preg_split('/[;,]/', $portfolio['skills']);
+                                foreach ($skillsArray as $skill) {
+                                    $trimmedSkill = trim($skill);
+                                    if ($trimmedSkill !== '') {
+                                        echo '<span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill fw-normal px-2 py-1" style="font-size: 0.75rem;">' . htmlspecialchars($trimmedSkill) . '</span>';
+                                    }
+                                }
+                            } else {
+                                echo '<span class="text-muted text-xs" style="font-size: 0.8rem;">Chưa cập nhật kỹ năng</span>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 p-0 mt-auto pt-3 border-top d-flex align-items-center justify-content-between">
+                        <div class="d-flex gap-3 text-secondary" style="font-size: 0.85rem;">
+                            <span><i class="bi bi-heart me-1"></i><?= (int)($portfolio['likes'] ?? 0) ?></span>
+                        </div>
+                        <button class="btn btn-link btn-sm p-0 text-primary text-decoration-none fw-semibold" onclick="window.location.href='./pages/detail.php?id=<?= $portfolio['uid'] ?? $portfolio['id'] ?>'">
+                            Xem Portfolio <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-       
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="col-12 text-center text-muted py-5">
+            <p class="mb-0">Hiện chưa có mẫu portfolio nào hiển thị.</p>
+        </div>
+    <?php endif; ?>
+</div>
             <!-- End of users card information -->
 
             <!-- Load More Mock Action -->
@@ -685,6 +688,37 @@
                     });
                 }
             });
+            </script>
+            <script>
+               function filterCategory(categoryId, element) {
+    // 1. Highlight active badge button
+    const badges = document.querySelectorAll('.category-badge');
+    badges.forEach(badge => badge.classList.remove('active'));
+    if (element) element.classList.add('active');
+
+    const targetId = String(categoryId).trim();
+    const items = document.querySelectorAll('#portfolioGrid .portfolio-item');
+
+    items.forEach((item, index) => {
+        const itemCatId = String(item.getAttribute('data-category') || '').trim();
+
+        if (targetId === 'all') {
+            // Revert back to original state (hide items > index 5 if they have extra-profile)
+            if (item.classList.contains('extra-profile')) {
+                item.classList.add('d-none');
+            } else {
+                item.classList.remove('d-none');
+            }
+        } else {
+            // Show item if it matches target category ID regardless of initial d-none state
+            if (itemCatId === targetId) {
+                item.classList.remove('d-none');
+            } else {
+                item.classList.add('d-none');
+            }
+        }
+    });
+}
             </script>
     </body>
 </html>
