@@ -60,9 +60,9 @@
     <!-- Header / Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top bg-body border-bottom py-3" style="backdrop-filter: blur(8px); background: rgba(var(--bs-body-bg-rgb), 0.85) !important; z-index: 1030;">
         <div class="container-fluid px-4">
-            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index.php">
-                <span class="badge bg-danger p-2"><i class="bi bi-shield-lock-fill"></i></span>
-                <span>Portfoli<span class="text-primary">Hub</span> <span class="badge bg-danger-subtle text-danger admin-badge text-uppercase ms-1">Admin</span></span>
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2">
+                <i><image src="../images/logo.jpg" style="width:50px; height:50px;"></image></i>
+                <span>Portfolio<span class="text-primary">Hub</span> <span class="badge bg-danger-subtle text-danger admin-badge text-uppercase ms-1">Admin</span></span>
             </a>
             
             <div class="d-flex align-items-center gap-2">
